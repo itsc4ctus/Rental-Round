@@ -44,11 +44,11 @@ GlobalKey<FormState> _key = GlobalKey();
     calculateExtraKm();
     // TODO: implement initState
     super.initState();
-
   }
 
 Future<void> moveToCompleted(status Status) async{
     await StatusServices().addCompletedStatus(Status);
+    await StatusServices().addCompletedDealStatus(Status);
     await StatusServices().deleteStatus(Status.cId);
     await CarServices().addAvailableCar(widget.selectedCar);
     await CarServices().deleteOnHoldCar(widget.selectedCar.vehicleNo);
@@ -62,11 +62,11 @@ setState(() {
     await CarServices().updateCar(vehicleNo, updatedCar);
 
   }
+
 Future<void> updateStatusTM(int totalAmt,status completedStatus)async {
     completedStatus.amountReceived = totalAmt;
     await StatusServices().updateCompletedStatus(completedStatus.cId, completedStatus);
 }
-
 
   void calculateExtraKm() {
     setState(() {

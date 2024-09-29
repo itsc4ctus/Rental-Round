@@ -2,9 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:rentel_round/Authentication/Screens/login_page.dart';
+import 'package:rentel_round/Screens/Drawer%20Screens/about_app.dart';
+import 'package:rentel_round/Screens/Drawer%20Screens/privacy_policy.dart';
 import 'package:rentel_round/Screens/Drawer%20Screens/profile_screen.dart';
 import 'package:rentel_round/Screens/Customer/add_screen.dart';
-import 'package:rentel_round/Screens/budget_screen.dart';
+import 'package:rentel_round/Screens/Budget%20Screen/budget_screen.dart';
+import 'package:rentel_round/Screens/Drawer%20Screens/share_location.dart';
 import 'package:rentel_round/Screens/car_screen.dart';
 import 'package:rentel_round/Screens/Status/status_screen.dart';
 import 'package:rentel_round/Services/auth_services.dart';
@@ -87,20 +90,29 @@ child: Container(
 
             ),
             ListTile(
-              leading: Icon(CupertinoIcons.car_detailed),
-              title: Text("Show All Cars"),
-            ),
-            ListTile(
+              onTap:(){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ShareLocation(),));
+              },
               leading: Icon(CupertinoIcons.location),
               title: Text("Share Location"),
             ),
             ListTile(
+              leading: Icon(CupertinoIcons.settings_solid),
+              title: Text("Settings"),
+            ),
+            ListTile(
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => PrivacyPolicy(),));
+              },
               leading: Icon(Icons.privacy_tip),
               title: Text("Privacy Policy"),
             ),
             ListTile(
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => AboutApp()));
+              },
               leading: Icon(Icons.info_outline),
-              title: Text("Privacy Policy"),
+              title: Text("About App"),
             ),
           ],
         ),
@@ -113,7 +125,6 @@ SizedBox(
         padding: EdgeInsets.symmetric(vertical: 0,horizontal: 50),
           width:double.infinity,
           child: ElevatedButton(onPressed: ()async{
-
           _showDialogue("Do you want to Logout?", "Logout", (){ Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage(),));}, context);
           await authServices.setLoginStatus(false);
           await CarServices().cloaseBox();

@@ -8,10 +8,12 @@ import '../Models/status_model.dart';
 class StatusServices{
   Box<status>? statusBox;
   Box<status>? completedStatusBox;
+  Box<status>? completedDealBox;
 
   Future<void> openBox() async {
     statusBox = await Hive.openBox("satusBox");
     completedStatusBox = await Hive.openBox("compledtedStatusBox");
+    completedDealBox = await Hive.openBox("completedDealBox");
 }
   Future<void> closeBox() async{
     await statusBox!.close();
@@ -30,8 +32,15 @@ class StatusServices{
       await openBox();
     }
     await completedStatusBox!.add(status);
+
   }
 
+  Future<void> addCompletedDealStatus(status status)async{
+    if(completedDealBox == null){
+      await openBox();
+    }
+    await completedDealBox!.add(status);
+  }
 
 
 
@@ -51,6 +60,15 @@ class StatusServices{
     }
     return completedStatusBox!.values.toList();
   }
+
+Future<List<status>> getCompletedDealStatus()async{
+    if(completedDealBox == null){
+      await openBox();
+    }
+    return completedDealBox!.values.toList();
+}
+
+
 
 
   Future<void> deleteStatus(String customerId) async {
@@ -100,10 +118,20 @@ class StatusServices{
     if(completedStatusBox== null){
       await openBox();
     }
+    if(completedDealBox == null){
+      await openBox();
+    }
     for(var key in completedStatusBox!.keys){
       final Status = await completedStatusBox!.get(key) as status;
       if(Status.cId == customerID){
         await completedStatusBox!.put(key, updatedStatus);
+        break;
+      }
+    }
+    for(var key in completedDealBox!.keys){
+      final Status = await completedDealBox!.get(key) as status;
+      if(Status.cId == customerID){
+        await completedDealBox!.put(key, updatedStatus);
         break;
       }
     }
