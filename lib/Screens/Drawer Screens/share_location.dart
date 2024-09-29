@@ -13,7 +13,7 @@ class _ShareLocationState extends State<ShareLocation> {
     return Scaffold(
       body: Column(
         children: [
-
+Text("HI"),
         ],
       ),
     );
