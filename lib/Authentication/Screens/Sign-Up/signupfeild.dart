@@ -11,15 +11,15 @@ inputFormatters: textOnly,
     controller: controller,
     obscureText: obscureText,
     decoration: InputDecoration(
-      hintStyle: TextStyle(
+      hintStyle: const TextStyle(
         fontFamily: 'Roboto',
       ),
       border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10)),
-      hintText: "$hinttext",
+      hintText: hinttext,
       label: Text(
-        "$labeltext",
-        style: TextStyle(fontFamily: "Roboto"),
+        labeltext,
+        style: const TextStyle(fontFamily: "Roboto"),
       ),
     ),
   );

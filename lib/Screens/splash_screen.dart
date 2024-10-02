@@ -4,7 +4,6 @@ import 'package:rentel_round/Models/auth_model.dart';
 import 'package:rentel_round/Services/auth_services.dart';
 import 'package:rentel_round/Services/car_services.dart';
 
-import '../Authentication/Screens/signup_page.dart';
 import 'navbar.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -31,7 +30,6 @@ _navigateToHome();
 Future<void> _navigateToHome()async{
   bool? status=  await authServices.getloginStatus();
   if(status==true){
-    List<Auth> userData = await authServices.getData();
     Auth? lastuser =await authServices.getLastUser();
 
     if(lastuser !=null) {
@@ -46,8 +44,8 @@ Future<void> _navigateToHome()async{
 }
 
   Future<void> _navigateToLogin() async{
-    await Future.delayed(Duration(seconds: 3));
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>LoginPage()));
+    await Future.delayed(const Duration(seconds: 3));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>const LoginPage()));
 
   }
 
@@ -55,7 +53,7 @@ Future<void> _navigateToHome()async{
   Widget build(BuildContext context) {
     return Scaffold(
      backgroundColor: Colors.blue.shade900,
-body: Center(child: Text("RENTAL\nROUND",textAlign: TextAlign.center,
+body: const Center(child: Text("RENTAL\nROUND",textAlign: TextAlign.center,
 style: TextStyle(
   fontFamily: "jaro",
 fontSize: 80,

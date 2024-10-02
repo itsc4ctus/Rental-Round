@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:rentel_round/utils/car/View%20Car/viewcartiles.dart';
-import 'package:rentel_round/utils/car/car_tile.dart';
 import 'package:rentel_round/utils/car/viewPCscreen.dart';
 import 'package:rentel_round/utils/car/viewRcscreen.dart';
 
@@ -29,14 +28,14 @@ class _ViewcarScreenState extends State<ViewcarScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Car Details",
           style: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 20,
           ),
         ),
-        backgroundColor: Color(0xFF1E3A8A),
+        backgroundColor: const Color(0xFF1E3A8A),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -45,15 +44,14 @@ class _ViewcarScreenState extends State<ViewcarScreen> {
           children: [
 
             Container(
-              child: Image(image: FileImage(File(widget.car.carImage))),
-              padding: EdgeInsets.symmetric(vertical: 8),
+              padding: const EdgeInsets.symmetric(vertical: 8),
               height: 160,
               width: double.infinity,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: Colors.blue.shade100),
                 color: Colors.blue.shade50, // Light Gray Border
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
                     color: Colors.black12,
                     spreadRadius: 2,
@@ -61,14 +59,15 @@ class _ViewcarScreenState extends State<ViewcarScreen> {
                   ),
                 ],
               ),
+              child: Image(image: FileImage(File(widget.car.carImage))),
             ),
 
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Column(
               children: [
                 Text(
                   widget.car.brandName,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                     color: Color(0xFF1E3A8A), // Dark Blue
@@ -76,7 +75,7 @@ class _ViewcarScreenState extends State<ViewcarScreen> {
                 ),
                 Text(
                   widget.car.carName,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.w500,
                     color: Color(0xFF60A5FA), // Light Blue
@@ -85,7 +84,7 @@ class _ViewcarScreenState extends State<ViewcarScreen> {
               ],
             ),
 
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Card(
               color: Colors.blue.shade50,
               elevation: 4,
@@ -106,13 +105,13 @@ class _ViewcarScreenState extends State<ViewcarScreen> {
             ),
 
 
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Row(
               children: [
                 Expanded(
                   child: ViewCarTiles().BlueTile("Seat Capacity:", widget.car.seatCapacity.toString()),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Expanded(
                   child: ViewCarTiles().BlueTile("KM Driven:", widget.car.kmDriven.toString()),
                 ),
@@ -120,7 +119,7 @@ class _ViewcarScreenState extends State<ViewcarScreen> {
             ),
 
 
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Row(
               children: [
                 Expanded(
@@ -133,7 +132,7 @@ class _ViewcarScreenState extends State<ViewcarScreen> {
             ),
 
 
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Row(
               children: [
                 Expanded(
@@ -146,14 +145,14 @@ class _ViewcarScreenState extends State<ViewcarScreen> {
             ),
 
 
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Row(
               children: [
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         "Pollution Validity",
                         style: TextStyle(
                           fontSize: 14,
@@ -162,18 +161,41 @@ class _ViewcarScreenState extends State<ViewcarScreen> {
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       ViewCarTiles().viewDate(_dateTime),
                     ],
                   ),
                 ),
               ],
             ),
-
-            SizedBox(height: 20),
+            Container(
+              child: widget.car.servicedDate == null?null :
+              Column(
+                children: [
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        const Text("LAST SERVICED:"),
+                        ViewCarTiles().viewDate(widget.car.servicedDate!),
+                      ],
+                    ),
+                  ),
+                ],
+              )
+              ,
+            ),
+            const SizedBox(height: 20),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF60A5FA), // Light Blue
+                backgroundColor: const Color(0xFF60A5FA), // Light Blue
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -186,8 +208,8 @@ class _ViewcarScreenState extends State<ViewcarScreen> {
                   ),
                 );
               },
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
+              child: const Padding(
+                padding: EdgeInsets.all(16.0),
                 child: Text(
                   "View Pollution Certificate",
                   style: TextStyle(fontSize: 16, color: Colors.white),
@@ -195,10 +217,10 @@ class _ViewcarScreenState extends State<ViewcarScreen> {
               ),
             ),
 
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF1E3A8A), // Dark Blue
+                backgroundColor: const Color(0xFF1E3A8A), // Dark Blue
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -215,7 +237,7 @@ class _ViewcarScreenState extends State<ViewcarScreen> {
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
                   "View RC: ${widget.car.rcNo}",
-                  style: TextStyle(fontSize: 16, color: Colors.white),
+                  style: const TextStyle(fontSize: 16, color: Colors.white),
                 ),
               ),
             ),
@@ -233,7 +255,7 @@ class _ViewcarScreenState extends State<ViewcarScreen> {
         children: [
           Text(
             label,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
               color: Color(0xFF1E3A8A),
@@ -241,7 +263,7 @@ class _ViewcarScreenState extends State<ViewcarScreen> {
           ),
           Text(
             value,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16,
               color: Color(0xFF1E40AF),
             ),
@@ -266,16 +288,16 @@ class _ViewcarScreenState extends State<ViewcarScreen> {
           children: [
             Text(
               label,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
                 color: Color(0xFF1E3A8A),
               ),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text(
               value,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 20,
                 color: Color(0xFF1E40AF),
                 fontWeight: FontWeight.w500,

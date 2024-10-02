@@ -1,21 +1,18 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rentel_round/Models/car_model.dart';
 import 'package:rentel_round/Models/status_model.dart';
 import 'package:rentel_round/Screens/Customer/bottomsheetcar_tile.dart';
 import 'package:rentel_round/Screens/Customer/customerFeilds.dart';
-import 'package:rentel_round/Screens/Status/status_screen.dart';
 import 'package:rentel_round/Services/car_services.dart';
 import 'package:rentel_round/Services/status_services.dart';
 
-import '../../Models/status_model.dart';
 
 class EditScreenCustomer extends StatefulWidget {
 final status customer;
-  EditScreenCustomer({required this.customer, super.key});
+  const EditScreenCustomer({required this.customer, super.key});
 
   @override
   State<EditScreenCustomer> createState() => _EditScreenCustomerState();
@@ -94,7 +91,7 @@ class _EditScreenCustomerState extends State<EditScreenCustomer> {
     int noOfDays = duration.inDays + 1; // Calculate number of days
     return Scaffold(
       appBar: AppBar(
-        title: Text("${widget.customer.cName}"),
+        title: Text(widget.customer.cName),
         centerTitle: true,
       ),
       backgroundColor: Colors.white,
@@ -203,25 +200,25 @@ class _EditScreenCustomerState extends State<EditScreenCustomer> {
                     TextInputType.number,
                   ),
                   const SizedBox(height: 10),
-                  Container(
+                  SizedBox(
                          height: 200,
                          width: 200,
                          child: SingleChildScrollView(
                            child: BottomSheetCarTile(
-                             carName: carSelected!.carName,
-                             vehicleNo: carSelected!.vehicleNo,
-                             kmDriven: carSelected!.kmDriven,
-                             seatCapacity: carSelected!.seatCapacity,
-                             cubicCapacity: carSelected!.cubicCapacity,
-                             rcNo: carSelected!.rcNo,
-                             pollutionDate: carSelected!.pollutionDate,
-                             fuelType: carSelected!.fuelType,
-                             amtPerDay: carSelected!.amtPerDay,
-                             carImage:carSelected!.carImage,
-                             brandName: carSelected!.brandName,
-                             carType: carSelected!.carType,
-                             pcImage: carSelected!.pcImage,
-                             rcImage: carSelected!.rcImage,
+                             carName: carSelected.carName,
+                             vehicleNo: carSelected.vehicleNo,
+                             kmDriven: carSelected.kmDriven,
+                             seatCapacity: carSelected.seatCapacity,
+                             cubicCapacity: carSelected.cubicCapacity,
+                             rcNo: carSelected.rcNo,
+                             pollutionDate: carSelected.pollutionDate,
+                             fuelType: carSelected.fuelType,
+                             amtPerDay: carSelected.amtPerDay,
+                             carImage:carSelected.carImage,
+                             brandName: carSelected.brandName,
+                             carType: carSelected.carType,
+                             pcImage: carSelected.pcImage,
+                             rcImage: carSelected.rcImage,
                            ),
                          ),
                        ),
@@ -273,13 +270,13 @@ class _EditScreenCustomerState extends State<EditScreenCustomer> {
                         width: 250,
                         child:  Center(
                                 child: Text(
-                                  "${calculateTotal(noOfDays, amountController, carSelected!)} for $noOfDays days",
+                                  "${calculateTotal(noOfDays, amountController, carSelected)} for $noOfDays days",
                                 ),
                               ),
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Row(
@@ -299,9 +296,9 @@ class _EditScreenCustomerState extends State<EditScreenCustomer> {
 
 
                           if (_key.currentState!.validate()) {
-                            if (proofImg == null || widget.customer.proofImage == null) {
+                            if (proofImg == null) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text("Add Proof Image!")));
+                                  const SnackBar(content: Text("Add Proof Image!")));
                               return;
                             }
                           _showDialogue("Click ok to save", "OK", _editCustomer, context);
@@ -337,7 +334,7 @@ class _EditScreenCustomerState extends State<EditScreenCustomer> {
     amountReceived: 0
     );
     _editStatus(cidController.text,newStatus);
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         backgroundColor: Colors.blue,
         content: Text("Customer details edited!")));
   }
@@ -360,12 +357,12 @@ Future<void> navigateToStatus()async{
   void _showDialogue(String messege,String btnName,VoidCallback btnfn,BuildContext context){
     showDialog(context: context,builder: (context) {
       return AlertDialog(
-        title: Text("$messege"),
+        title: Text(messege),
         actions: [
           ElevatedButton(onPressed: (){
             Navigator.pop(context);
-          }, child: Text("CANCEL")),
-          ElevatedButton(onPressed: btnfn, child: Text("$btnName"))
+          }, child: const Text("CANCEL")),
+          ElevatedButton(onPressed: btnfn, child: Text(btnName))
         ],
       );
 

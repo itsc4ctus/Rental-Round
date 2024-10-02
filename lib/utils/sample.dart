@@ -9,6 +9,6 @@ Future<void> sample() async{
   Box<String> boxname;
   boxname = await Hive.openBox('myBox');
   await boxname.put("key", "hello");
-  await boxname.get("key");
+  boxname.get("key");
 
 }

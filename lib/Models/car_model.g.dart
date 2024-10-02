@@ -32,13 +32,15 @@ class CarsAdapter extends TypeAdapter<Cars> {
       brandName: fields[10] as String,
       carType: fields[11] as String,
       availability: fields[14] as bool,
+      servicedDate: fields[15] as DateTime?,
+      serviceAmount: fields[16] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, Cars obj) {
     writer
-      ..writeByte(15)
+      ..writeByte(17)
       ..writeByte(0)
       ..write(obj.carName)
       ..writeByte(1)
@@ -68,7 +70,11 @@ class CarsAdapter extends TypeAdapter<Cars> {
       ..writeByte(13)
       ..write(obj.pcImage)
       ..writeByte(14)
-      ..write(obj.availability);
+      ..write(obj.availability)
+      ..writeByte(15)
+      ..write(obj.servicedDate)
+      ..writeByte(16)
+      ..write(obj.serviceAmount);
   }
 
   @override

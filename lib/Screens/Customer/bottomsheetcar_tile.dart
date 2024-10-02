@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class BottomSheetCarTile extends StatelessWidget {
@@ -21,7 +20,7 @@ class BottomSheetCarTile extends StatelessWidget {
 
 
   const BottomSheetCarTile({
-    Key? key,
+    super.key,
     required this.carName,
     required this.vehicleNo,
     required this.kmDriven,
@@ -37,7 +36,7 @@ class BottomSheetCarTile extends StatelessWidget {
     required this.pcImage,
     required this.rcImage,
 
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -59,12 +58,12 @@ class BottomSheetCarTile extends StatelessWidget {
                       image: FileImage(File(carImage))
 
                   ),
-                  Text("$brandName",
-                  style: TextStyle(
+                  Text(brandName,
+                  style: const TextStyle(
                     fontFamily: "Roboto",
                   ),
                   ),
-                  Text("$carName"),
+                  Text(carName),
                   Text("amt/day:$amtPerDay"),
                 ],
               ),

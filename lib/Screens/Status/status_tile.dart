@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rentel_round/Screens/Status/showDeal.dart';
 import 'package:rentel_round/Services/car_services.dart';
@@ -22,7 +21,7 @@ class StatusTile extends StatefulWidget {
   final VoidCallback editStatus;
   final status Status;
 
-  StatusTile({
+  const StatusTile({
     required this.cName,
     required this.cId,
     required this.startDate,
@@ -67,7 +66,7 @@ class _StatusTileState extends State<StatusTile> {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
           elevation: 4.0,
           child: Container(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [Colors.white, Colors.grey.shade200],
@@ -91,7 +90,7 @@ class _StatusTileState extends State<StatusTile> {
                     ),
                   ),
                 ),
-                SizedBox(width: 16),
+                const SizedBox(width: 16),
 
                 Expanded(
                   child: Column(
@@ -100,13 +99,13 @@ class _StatusTileState extends State<StatusTile> {
                       // Customer Name
                       Text(
                         widget.cName,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                           color: Colors.black87,
                         ),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       // Return Date
                       Text(
                         "Return Date:\n ${widget.endDate.day} ${monthToWords(widget.endDate.month)} ${widget.endDate.year}",
@@ -124,10 +123,10 @@ class _StatusTileState extends State<StatusTile> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: isCompleted ? Colors.grey : Colors.blue,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   ),
-                  icon: Icon(Icons.handshake_rounded),
-                  label: Text(
+                  icon: const Icon(Icons.handshake_rounded),
+                  label: const Text(
                     "Deal",
                     style: TextStyle(fontSize: 14),
                   ),

@@ -42,7 +42,7 @@ class _StatusScreenState extends State<StatusScreen> {
       body: Column(
         children: [
           Expanded(
-            child:statusList.isEmpty ? Center(
+            child:statusList.isEmpty ? const Center(
               child: Text("No deals to show!"),
             ): ListView.builder(
               itemCount: statusList.length,
@@ -62,8 +62,8 @@ class _StatusScreenState extends State<StatusScreen> {
             ),
           ),
           ElevatedButton(onPressed: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => CompletedDeals(),));
-          }, child: Text("Completed deals"))
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const CompletedDeals(),));
+          }, child: const Text("Completed deals"))
         ],
       ),
     );

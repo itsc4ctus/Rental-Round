@@ -3,16 +3,14 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rentel_round/Models/car_model.dart';
-import 'package:rentel_round/Screens/home_page.dart';
 import 'package:rentel_round/Services/car_services.dart';
 
 class EditCarScreen extends StatefulWidget {
 
   final Cars car;
-  EditCarScreen({super.key,required this.car});
+  const EditCarScreen({super.key,required this.car});
 
   @override
   State<EditCarScreen> createState() => _EditCarScreenState();
@@ -54,25 +52,25 @@ class _EditCarScreenState extends State<EditCarScreen> {
     super.initState();
   }
 
-  ImagePicker _picker = ImagePicker();
+  final ImagePicker _picker = ImagePicker();
   Future<void> pickCarImage() async {
-    XFile? _pickImage = await _picker.pickImage(source: ImageSource.gallery);
+    XFile? pickImage = await _picker.pickImage(source: ImageSource.gallery);
     setState(() {
-      carImage = _pickImage;
+      carImage = pickImage;
     });
   }
 
   Future<void> pickRcImage() async {
-    XFile? _pickImage = await _picker.pickImage(source: ImageSource.gallery);
+    XFile? pickImage = await _picker.pickImage(source: ImageSource.gallery);
     setState(() {
-      rcImage = _pickImage;
+      rcImage = pickImage;
     });
   }
 
   Future<void> pickPcImage() async {
-    XFile? _pickImage = await _picker.pickImage(source: ImageSource.gallery);
+    XFile? pickImage = await _picker.pickImage(source: ImageSource.gallery);
     setState(() {
-      pcImage = _pickImage;
+      pcImage = pickImage;
     });
   }
 
@@ -87,13 +85,13 @@ class _EditCarScreenState extends State<EditCarScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
 
-        title: Text("EDIT CAR"),
+        title: const Text("EDIT CAR"),
         centerTitle: true,
       ),
       body: Center(
         child: SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: Form(
               key: _key,
               child: Column(
@@ -130,12 +128,12 @@ class _EditCarScreenState extends State<EditCarScreen> {
                             onPressed: () async {
                               await pickCarImage();
                             },
-                            child: Text(
+                            child: const Text(
                               "UPLOAD",
                               style: TextStyle(color: Colors.white),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 8,
                           ),
                           Text(
@@ -148,10 +146,10 @@ class _EditCarScreenState extends State<EditCarScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   TextFormField(
@@ -159,22 +157,23 @@ class _EditCarScreenState extends State<EditCarScreen> {
                       if(value==null || value == ""){
                         return "please fill valid feild";
                       }
+                      return null;
                     },       autovalidateMode: AutovalidateMode.onUserInteraction,
                     controller: carnameController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
-                      hintStyle: TextStyle(
+                      hintStyle: const TextStyle(
                         fontFamily: 'Roboto',
                       ),
                       hintText: "enter your car name",
-                      label: Text(
+                      label: const Text(
                         "car name",
                         style: TextStyle(fontFamily: "Roboto"),
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   TextFormField(
@@ -182,22 +181,23 @@ class _EditCarScreenState extends State<EditCarScreen> {
                       if(value==null || value == ""){
                         return "please fill valid feild";
                       }
+                      return null;
                     },       autovalidateMode: AutovalidateMode.onUserInteraction,
                     controller: brandController,
                     decoration: InputDecoration(
-                      hintStyle: TextStyle(
+                      hintStyle: const TextStyle(
                         fontFamily: 'Roboto',
                       ),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
                       hintText: "enter brand name",
-                      label: Text(
+                      label: const Text(
                         "brandname",
                         style: TextStyle(fontFamily: "Roboto"),
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   TextFormField(
@@ -205,35 +205,37 @@ class _EditCarScreenState extends State<EditCarScreen> {
                       if(value==null || value == ""){
                         return "please fill valid feild";
                       }
+                      return null;
                     },
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     controller: vehiclenoController,
                     decoration: InputDecoration(
-                      hintStyle: TextStyle(
+                      hintStyle: const TextStyle(
                         fontFamily: 'Roboto',
                       ),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
                       hintText: "enter vehicle no",
-                      label: Text(
+                      label: const Text(
                         "vehicle no",
                         style: TextStyle(fontFamily: "Roboto"),
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
+                      SizedBox(
                         width: 200,
                         child: TextFormField(
                           validator: (value){
                             if(value==null || value == ""){
                               return "please fill valid feild";
                             }
+                            return null;
                           },  inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly
                         ],
@@ -241,13 +243,13 @@ class _EditCarScreenState extends State<EditCarScreen> {
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           controller: rcnoController,
                           decoration: InputDecoration(
-                            hintStyle: TextStyle(
+                            hintStyle: const TextStyle(
                               fontFamily: 'Roboto',
                             ),
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10)),
                             hintText: "enter RC no",
-                            label: Text(
+                            label: const Text(
                               "RC no",
                               style: TextStyle(fontFamily: "Roboto"),
                             ),
@@ -258,7 +260,7 @@ class _EditCarScreenState extends State<EditCarScreen> {
                         onPressed: () async {
                           await pickRcImage();
                         },
-                        child: Text(
+                        child: const Text(
                           "UPLOAD RC",
                           style: TextStyle(color: Colors.white,
                           fontFamily: "jaro"
@@ -270,16 +272,16 @@ class _EditCarScreenState extends State<EditCarScreen> {
                           onChanged: (value) {})
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
-                  Container(
+                  const SizedBox(
                       width: double.infinity,
                       child: Text(
                         "Last date of pollution",
                         textAlign: TextAlign.start,
                       )),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Row(
@@ -302,7 +304,7 @@ class _EditCarScreenState extends State<EditCarScreen> {
                                         backgroundColor: Colors.white,
                                         onDateTimeChanged: (DateTime newValue) {
                                           setState(() {
-                                            dateNow = newValue!;
+                                            dateNow = newValue;
                                           });
                                         },
                                         mode: CupertinoDatePickerMode.date,
@@ -312,18 +314,18 @@ class _EditCarScreenState extends State<EditCarScreen> {
                                 },
                                 child: Text(
                                   "${dateNow.day} - ${dateNow.month} - ${dateNow.year}",
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 20, color: Colors.black),
                                 ),
                               ),
-                              Icon(Icons.date_range)
+                              const Icon(Icons.date_range)
                             ],
                           )),
                       ElevatedButton(
                         onPressed: () async {
                           await pickPcImage();
                         },
-                        child: Text(
+                        child: const Text(
                           "UPLOAD PC",
                           style: TextStyle(color: Colors.white,
                           fontFamily: "jaro",
@@ -335,19 +337,20 @@ class _EditCarScreenState extends State<EditCarScreen> {
                           onChanged: (value) {})
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
+                      SizedBox(
                         width: 110,
                         child: TextFormField(
                           validator: (value){
                             if(value==null || value == ""){
                               return "please fill valid feild";
                             }
+                            return null;
                           },  inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly
                         ],
@@ -355,25 +358,26 @@ class _EditCarScreenState extends State<EditCarScreen> {
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           controller: ccController,
                           decoration: InputDecoration(
-                            hintStyle: TextStyle(
+                            hintStyle: const TextStyle(
                               fontFamily: 'Roboto',
                             ),
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10)),
-                            label: Text(
+                            label: const Text(
                               "CC",
                               style: TextStyle(fontFamily: "Roboto"),
                             ),
                           ),
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         width: 110,
                         child: TextFormField(
                           validator: (value){
                             if(value==null || value == ""){
                               return "please fill valid feild";
                             }
+                            return null;
                           },  inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly
                         ],
@@ -381,19 +385,19 @@ class _EditCarScreenState extends State<EditCarScreen> {
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           controller: kmdrivenController,
                           decoration: InputDecoration(
-                            hintStyle: TextStyle(
+                            hintStyle: const TextStyle(
                               fontFamily: 'Roboto',
                             ),
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10)),
-                            label: Text(
+                            label: const Text(
                               "KM driven",
                               style: TextStyle(fontFamily: "Roboto"),
                             ),
                           ),
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         width: 120,
                         child: DropdownButton<String>(
                           onChanged: (String? newValue) {
@@ -401,35 +405,36 @@ class _EditCarScreenState extends State<EditCarScreen> {
                               dropDownValue = newValue!;
                             });
                           },
-                          items: [
+                          items: const [
                             DropdownMenuItem<String>(
-                              child: Text("Manual"),
                               value: "M",
+                              child: Text("Manual"),
                             ),
                             DropdownMenuItem<String>(
-                              child: Text("Automatic"),
                               value: "A",
+                              child: Text("Automatic"),
                             ),
                           ],
-                          icon: Icon(Icons.menu),
+                          icon: const Icon(Icons.menu),
                           value: dropDownValue,
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
+                      SizedBox(
                         width: 110,
                         child: TextFormField(
                           validator: (value){
                             if(value==null || value == ""){
                               return "please fill valid feild";
                             }
+                            return null;
                           },
                           controller: amountController,
                           inputFormatters: [
@@ -438,26 +443,27 @@ class _EditCarScreenState extends State<EditCarScreen> {
                           keyboardType: TextInputType.number,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           decoration: InputDecoration(
-                            suffixIcon: Icon(Icons.currency_rupee),
-                            hintStyle: TextStyle(
+                            suffixIcon: const Icon(Icons.currency_rupee),
+                            hintStyle: const TextStyle(
                               fontFamily: 'Roboto',
                             ),
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10)),
-                            label: Text(
+                            label: const Text(
                               "amount",
                               style: TextStyle(fontFamily: "Roboto"),
                             ),
                           ),
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         width: 110,
                         child: TextFormField(
                           validator: (value){
                             if(value==null || value == ""){
                               return "please fill valid feild";
                             }
+                            return null;
                           },  inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly
                         ],
@@ -465,19 +471,19 @@ class _EditCarScreenState extends State<EditCarScreen> {
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           controller: seatCapacityController,
                           decoration: InputDecoration(
-                            hintStyle: TextStyle(
+                            hintStyle: const TextStyle(
                               fontFamily: 'Roboto',
                             ),
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10)),
-                            label: Text(
+                            label: const Text(
                               "seat capacity",
                               style: TextStyle(fontFamily: "Roboto"),
                             ),
                           ),
                         ),
                       ),
-                      Container(
+                      SizedBox(
                           width: 120,
                           child: DropdownButton<String>(
                             focusColor: Colors.black,
@@ -486,23 +492,27 @@ class _EditCarScreenState extends State<EditCarScreen> {
                                 fuelDownValue = fuelValue!;
                               });
                             },
-                            items: [
+                            items: const [
                               DropdownMenuItem<String>(
-                                  child: Text("PETROL"), value: "PETROL"),
+                                  value: "PETROL",
+                                  child: Text("PETROL")),
                               DropdownMenuItem<String>(
-                                  child: Text("DEISEL"), value: "DEISEL"),
+                                  value: "DEISEL",
+                                  child: Text("DEISEL")),
                               DropdownMenuItem<String>(
-                                  child: Text("ELECTRIC"), value: "ELECTRIC"),
+                                  value: "ELECTRIC",
+                                  child: Text("ELECTRIC")),
                               DropdownMenuItem<String>(
-                                  child: Text("CNG"), value: "CNG"),
+                                  value: "CNG",
+                                  child: Text("CNG")),
                             ],
-                            icon: Icon(Icons.menu),
+                            icon: const Icon(Icons.menu),
                             value:
                             fuelDownValue, // Ensure fuelDownValue is correctly initialized
                           )),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Row(
@@ -516,7 +526,7 @@ class _EditCarScreenState extends State<EditCarScreen> {
                           }, context);
 
                         },
-                        child: Text(
+                        child: const Text(
                           "CANCEL",
                           style: TextStyle(color: Colors.white),
                         ),
@@ -525,21 +535,21 @@ class _EditCarScreenState extends State<EditCarScreen> {
                         onPressed: () {
                           if(_key.currentState!.validate()){
                             if(carImage == null){
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Upload a car image")));
+                              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Upload a car image")));
                               return;
                             }
                             if(rcImage == null){
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Upload a RC image")));
+                              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Upload a RC image")));
                               return;
                             }
                             if(pcImage == null){
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Upload a PC image")));
+                              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Upload a PC image")));
                               return;
                             }
                             _showDialogue("Click ok to Add new car", "EDIT", _editCar, context);
                           }
                          },
-                        child: Text(
+                        child: const Text(
                           "SAVE",
                           style: TextStyle(color: Colors.white),
                         ),
@@ -576,7 +586,7 @@ class _EditCarScreenState extends State<EditCarScreen> {
 await CarServices().updateCar(widget.car.vehicleNo, editCar);
 await CarServices().getCar();
     Navigator.popUntil(context, (route) => route.isFirst);
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         backgroundColor: Colors.blue,
         content: Text("Car Edited Succesfully!",
         style: TextStyle(
@@ -587,12 +597,12 @@ await CarServices().getCar();
  void _showDialogue(String messege,String btnName,VoidCallback btnfn,BuildContext context){
    showDialog(context: context,builder: (context) {
      return AlertDialog(
-       title: Text("$messege"),
+       title: Text(messege),
        actions: [
          ElevatedButton(onPressed: (){
            Navigator.pop(context);
-         }, child: Text("CANCEL")),
-         ElevatedButton(onPressed: btnfn, child: Text("$btnName"))
+         }, child: const Text("CANCEL")),
+         ElevatedButton(onPressed: btnfn, child: Text(btnName))
        ],
      );
 

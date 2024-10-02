@@ -7,10 +7,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:rentel_round/Authentication/Screens/Sign-Up/signupfeild.dart';
 import 'package:rentel_round/Authentication/Screens/login_page.dart';
 import 'package:rentel_round/Models/auth_model.dart';
-import 'package:rentel_round/Screens/navbar.dart';
 import 'package:rentel_round/Services/auth_services.dart';
 
-import '../../Screens/Drawer Screens/profile_screen.dart';
 
 class SignupPage extends StatefulWidget {
 
@@ -33,14 +31,14 @@ XFile? img;
 
 class _SignupPageState extends State<SignupPage> {
   SignUpFeilds feilds = SignUpFeilds();
-  ImagePicker _picker = ImagePicker();
+  final ImagePicker _picker = ImagePicker();
   XFile? _image;
 
   Future<void> pickImage() async{
-   final XFile? _pickedimg = await _picker.pickImage(source: ImageSource.gallery);
-   if(_pickedimg!=null){
+   final XFile? pickedimg = await _picker.pickImage(source: ImageSource.gallery);
+   if(pickedimg!=null){
      setState(() {
-       _image = _pickedimg;
+       _image = pickedimg;
      });
 
    }
@@ -53,7 +51,7 @@ class _SignupPageState extends State<SignupPage> {
         child: Center(
           child: SingleChildScrollView(
             child: Container(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -61,12 +59,12 @@ class _SignupPageState extends State<SignupPage> {
                   Row(
                     children: [
                       IconButton(onPressed: (){
-                       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => LoginPage()
+                       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const LoginPage()
                          ,), (route) => false);
-                      }, icon: Icon(CupertinoIcons.back)),
+                      }, icon: const Icon(CupertinoIcons.back)),
                       Container(
 
-                        child: Text(
+                        child: const Text(
                           "SIGNUP",
                           textAlign: TextAlign.center,
                           style: TextStyle(fontSize: 30, color: Colors.black),
@@ -74,7 +72,7 @@ class _SignupPageState extends State<SignupPage> {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   ClipRRect(
@@ -83,46 +81,49 @@ class _SignupPageState extends State<SignupPage> {
                       height: 80,
                       width: 80,
                       color: Colors.purple.shade100,
-                      child: _image == null?Icon(Icons.image):Image(image: FileImage(File(_image!.path)))
+                      child: _image == null?const Icon(Icons.image):Image(image: FileImage(File(_image!.path)))
 
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   ElevatedButton(
                     onPressed: () async{
                      await pickImage();
                     },
-                    child: Text(
+                    child: const Text(
                       "UPLOAD",
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   feilds.feild("shop name", "enter your shop name", shopnameController, (value){
                     if(value==null||value.isEmpty){
                       return 'Enter a valid name';
                     }
+                    return null;
                   }),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   feilds.feild("shop owner name", "enter your shop owner name", shopownernameController, (value){
                     if(value==null||value.isEmpty){
                       return 'Enter a valid shop owner name';
                     }
+                    return null;
                   }),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),feilds.feild("shop location", "enter your shop location", shoplocationController, (value){
                     if(value==null||value.isEmpty){
                       return 'Enter a location';
                     }
+                    return null;
                   }),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   feilds.feild("phone number", "enter your phone number", shopphonenoController,(value){
@@ -132,16 +133,18 @@ class _SignupPageState extends State<SignupPage> {
                     if(value.length!=10){
                       return 'Enter A 10 digit number';
                     }
+                    return null;
                   },TextInputType.phone,[FilteringTextInputFormatter.digitsOnly]),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   feilds.feild("username", "enter username", usernameController, (value){
                     if(value==null||value.isEmpty){
                       return 'Enter a username';
                     }
+                    return null;
                   }),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   feilds.feild("email", "enter your email", emailController, (value) {
@@ -153,34 +156,36 @@ class _SignupPageState extends State<SignupPage> {
                     }
                     return null;
                   },),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   feilds.feild("password", "enter your password", passwordController, (value){
                     if(value==null||value.isEmpty){
                       return 'Enter a password';
                     }
+                    return null;
                   },TextInputType.text,[],true),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   feilds.feild("confirm password", "enter your password", cpasswordController, (value){
                     if(value==null||value.isEmpty){
                       return 'Enter a password';
                     }
+                    return null;
                   },TextInputType.text,[],true),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   ElevatedButton(
                     onPressed: () async {
                       if(_formKey.currentState!.validate()){
                         if(_image==null){
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Upload an image")));
+                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Upload an image")));
                           return;
                         }
                         if(passwordController.text != cpasswordController.text){
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("passwords must be same!")));
+                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("passwords must be same!")));
                           return;
                         }
                         Auth auth = Auth(
@@ -198,12 +203,12 @@ class _SignupPageState extends State<SignupPage> {
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => LoginPage()));
+                                builder: (context) => const LoginPage()));
                       }else{
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please fill the above details!")));
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please fill the above details!")));
                       }
                     },
-                    child: Text(
+                    child: const Text(
                       "CREATE ACCOUNT",
                       style: TextStyle(color: Colors.white),
                     ),

@@ -1,16 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rentel_round/Authentication/Screens/signup_page.dart';
 import 'package:rentel_round/Models/auth_model.dart';
-import 'package:rentel_round/Screens/Drawer%20Screens/profile_screen.dart';
 import 'package:rentel_round/Screens/navbar.dart';
 import 'package:rentel_round/Services/auth_services.dart';
 
-import '../../Models/auth_model.dart';
 
 class LoginPage extends StatefulWidget {
 
-   LoginPage({super.key});
+   const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -19,7 +16,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
 TextEditingController usernameController = TextEditingController();
 TextEditingController passwordController = TextEditingController();
-GlobalKey<FormState> _formKey = GlobalKey();
+final GlobalKey<FormState> _formKey = GlobalKey();
 AuthServices authServices = AuthServices();
 
   @override
@@ -42,7 +39,7 @@ AuthServices authServices = AuthServices();
                         color: Colors.blue.shade900,
                       fontFamily: "jaro"
                     ),),
-                  SizedBox(
+                  const SizedBox(
                     height: 50,
                   ),
                   Padding(
@@ -52,17 +49,18 @@ AuthServices authServices = AuthServices();
                         if(value==null || value.isEmpty){
                           return "Enter a username";
                         }
+                        return null;
                       },
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       controller: usernameController,
                       decoration: InputDecoration(
 
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                        hintStyle: TextStyle(
+                        hintStyle: const TextStyle(
                           fontFamily: 'Roboto',
                         ),
                         hintText: "enter your username",
-                        label: Text("username"),
+                        label: const Text("username"),
 
                       ),
                     ),
@@ -74,22 +72,23 @@ AuthServices authServices = AuthServices();
                         if(value==null || value.isEmpty){
                           return "Enter a Password";
                         }
+                        return null;
                       },
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       obscureText: true,
                       controller: passwordController,
                       decoration: InputDecoration(
-                        hintStyle: TextStyle(
+                        hintStyle: const TextStyle(
                           fontFamily: 'Roboto',
                         ),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                         hintText: "enter your password" ,
-                        label: Text("password"),
+                        label: const Text("password"),
 
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 40,
                   ),
                   ElevatedButton(onPressed: () async{
@@ -97,34 +96,34 @@ AuthServices authServices = AuthServices();
                       await _login();
                     }
                   else{
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("User not found!")));
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("User not found!")));
                     }
-                  }, child: Text("LOGIN",
+                  }, child: const Text("LOGIN",
                   style: TextStyle(
                     color: Colors.white
                   ),
                   ),
 
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 50,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Dont't have an account?",
+                      const Text("Dont't have an account?",
                       style: TextStyle(
                         fontFamily: 'Roboto',
                         fontWeight: FontWeight.w500,
 
                       ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 15,
                       ),
                       ElevatedButton(onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>SignupPage()));
-                      }, child: Text("CREATE ACCOUNT",
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>const SignupPage()));
+                      }, child: const Text("CREATE ACCOUNT",
                         style: TextStyle(
                             color: Colors.white
                         ),
@@ -159,7 +158,7 @@ AuthServices authServices = AuthServices();
       }
     }
     if(loginSuccesfull==false){
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Invalid User Name Or Password!")));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Invalid User Name Or Password!")));
     }
   }
 }

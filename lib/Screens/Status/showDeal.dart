@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:rentel_round/Screens/Status/status_screen.dart';
 import 'package:rentel_round/Services/car_services.dart';
 import 'package:rentel_round/Services/status_services.dart';
 
@@ -16,7 +14,7 @@ class ShowDeal extends StatefulWidget {
   final Cars selectedCar;
 
 
-  ShowDeal({
+  const ShowDeal({super.key, 
     required this.carAmount,
     required this.advAmount,
     required this.extraAmount,
@@ -36,7 +34,7 @@ class _ShowDealState extends State<ShowDeal> {
 
   TextEditingController extraKmDrivenController = TextEditingController();
   TextEditingController amountController = TextEditingController();
-GlobalKey<FormState> _key = GlobalKey();
+final GlobalKey<FormState> _key = GlobalKey();
   @override
   void initState() {
 
@@ -83,7 +81,7 @@ Future<void> updateStatusTM(int totalAmt,status completedStatus)async {
     return AlertDialog(
       title: const Text("Deal"),
       content: SingleChildScrollView(
-        child: Container(
+        child: SizedBox(
           height: 450,
           child: Form(
             key: _key,
@@ -96,16 +94,17 @@ Future<void> updateStatusTM(int totalAmt,status completedStatus)async {
                     if(value == null || value.isEmpty){
                       return "Enter current Car KM";
                     }
-                    if(int.parse(value!)<widget.kmDriven){
+                    if(int.parse(value)<widget.kmDriven){
                       return "KM must be greater than the old one";
                     }
+                    return null;
                   },
                   controller: extraKmDrivenController,
 
                   onChanged: (value){
                     calculateExtraKm();
                   },
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: "KM driven",
                     hintText: "Enter km driven after use",
@@ -169,6 +168,7 @@ Future<void> updateStatusTM(int totalAmt,status completedStatus)async {
                     if(amountController.text.isEmpty){
                       return "Enter total amount paid";
                     }
+                    return null;
                   },
                   controller: amountController,
                   decoration: const InputDecoration(
@@ -199,7 +199,7 @@ Future<void> updateStatusTM(int totalAmt,status completedStatus)async {
                             await updateCarKM(widget.selectedCar.vehicleNo, widget.selectedCar, int.parse(extraKmDrivenController.text));
                             await updateStatusTM(int.parse(amountController.text), widget.Status);
                             Navigator.of(context).pop(true);
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                                 backgroundColor: Colors.green,
                                 content: Text("Deal Completed!",
                                 style: TextStyle(
@@ -226,12 +226,12 @@ Future<void> updateStatusTM(int totalAmt,status completedStatus)async {
   void _showDialogue(String messege,String btnName,VoidCallback btnfn,BuildContext context){
     showDialog(context: context,builder: (context) {
       return AlertDialog(
-        title: Text("$messege"),
+        title: Text(messege),
         actions: [
           ElevatedButton(onPressed: (){
             Navigator.pop(context);
-          }, child: Text("CANCEL")),
-          ElevatedButton(onPressed: btnfn, child: Text("$btnName"))
+          }, child: const Text("CANCEL")),
+          ElevatedButton(onPressed: btnfn, child: Text(btnName))
         ],
       );
 

@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:rentel_round/Authentication/Screens/signup_page.dart';
 import 'dart:io';
 import '../../Models/auth_model.dart';
 
@@ -26,14 +24,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("SHOP DETAILS"),
+        title: const Text("SHOP DETAILS"),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding:EdgeInsets.all(12),
+              padding:const EdgeInsets.all(12),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all()
@@ -42,16 +40,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
+                  SizedBox(
                     height: 100,
                     width: 100,
 
                     child: CircleAvatar(
                       backgroundImage: widget.auth.image.isNotEmpty?FileImage(File(widget.auth.image)):null,
-                      child: widget.auth.image.isEmpty?Icon(CupertinoIcons.car):null,
+                      child: widget.auth.image.isEmpty?const Icon(CupertinoIcons.car):null,
                     ),
                   ),
-                  Text(widget.auth.shopname,style: TextStyle(
+                  Text(widget.auth.shopname,style: const TextStyle(
                       fontSize: 24
                   ),),
                 ],
@@ -78,13 +76,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
         child: Column(
           children: [
-            Text("$label",
-            style: TextStyle(
+            Text(label,
+            style: const TextStyle(
               fontFamily: "Roboto"
             ),
             ),
-            Text("$data",
-            style: TextStyle(
+            Text(data,
+            style: const TextStyle(
               fontSize: 24
             ),
             ),

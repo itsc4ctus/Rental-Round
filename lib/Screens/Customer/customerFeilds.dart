@@ -9,12 +9,12 @@ Widget fields(String? Function(String? value)? validator,String label,String hin
     keyboardType: keyboardType,
     decoration: InputDecoration(
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-      hintStyle: TextStyle(
+      hintStyle: const TextStyle(
         fontFamily: 'Roboto',
       ),
-      hintText: "$hinttext",
-      label: Text("$label",
-        style: TextStyle(
+      hintText: hinttext,
+      label: Text(label,
+        style: const TextStyle(
             fontFamily: "Roboto"
         ),
       ),

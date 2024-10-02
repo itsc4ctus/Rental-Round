@@ -7,15 +7,15 @@ class PrivacyPolicy extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Privacy policy"),
+        title: const Text("Privacy policy"),
       ),
       body: SafeArea(
         child: Center(
-          child: Container(
+          child: SizedBox(
             width: double.infinity,
             child: ListView(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
                 Text("RENTAL\nROUND",
@@ -28,8 +28,8 @@ class PrivacyPolicy extends StatelessWidget {
                 ),
                 
                 Container(
-                  padding: EdgeInsets.all(10),
-                  margin: EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(10),
+                  margin: const EdgeInsets.all(12),
                   width: double.infinity,
 
                   decoration: BoxDecoration(
@@ -37,7 +37,7 @@ class PrivacyPolicy extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
 
                   ),
-                  child: Text("""
+                  child: const Text("""
 Last Updated: 19 - Sep - 2024
 
 At RENTAL ROUND, we are committed to protecting your privacy. This Privacy Policy outlines how we collect, use, and safeguard your personal information when you use our car rental services through our app.

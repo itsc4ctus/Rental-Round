@@ -7,15 +7,15 @@ class AboutApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("About App"),
+        title: const Text("About App"),
       ),
       body: SafeArea(
         child: Center(
-          child: Container(
+          child: SizedBox(
             width: double.infinity,
             child: ListView(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
                 Text("About Rental Round",
@@ -28,8 +28,8 @@ class AboutApp extends StatelessWidget {
                 ),
 
                 Container(
-                  padding: EdgeInsets.all(10),
-                  margin: EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(10),
+                  margin: const EdgeInsets.all(12),
                   width: double.infinity,
 
                   decoration: BoxDecoration(
@@ -37,7 +37,7 @@ class AboutApp extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
 
                   ),
-                  child: Text("""
+                  child: const Text("""
 Rental Round is a car rental app built for shop owners, providing an efficient way to manage vehicle rentals. Whether it’s for deliveries, transporting goods, or daily business operations, Rental Round is designed to simplify rental management.
 
 How It Works:

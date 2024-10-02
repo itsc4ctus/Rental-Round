@@ -1,9 +1,7 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rentel_round/Screens/Status/viewCompletedStatus.dart';
-import 'package:rentel_round/Services/car_services.dart';
 
 import '../../Models/car_model.dart';
 import '../../Models/status_model.dart';
@@ -21,7 +19,7 @@ class StatusTileCompleted extends StatefulWidget {
   final VoidCallback ondelete;
   final status completedCustomer;
 
-  StatusTileCompleted({
+  const StatusTileCompleted({
     required this.cName,
     required this.cId,
     required this.startDate,
@@ -64,7 +62,7 @@ class _StatusTileCompletedState extends State<StatusTileCompleted> {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
           elevation: 4.0,
           child: Container(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [Colors.white, Colors.grey.shade200],
@@ -98,16 +96,16 @@ class _StatusTileCompletedState extends State<StatusTileCompleted> {
                       children: [
                         Text(
                           widget.cName,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: Colors.black87,
                           ),
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Text(
                           "Returned Date:\n ${widget.endDate.day} ${monthToWords(widget.endDate.month)} ${widget.endDate.year}",
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 14,
                             color: Colors.black54,
                           ),
@@ -119,7 +117,7 @@ class _StatusTileCompletedState extends State<StatusTileCompleted> {
                 // Delete Icon Button
                 IconButton(
                   onPressed: widget.ondelete,
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.delete_rounded,
                     color: Colors.redAccent,
                   ),

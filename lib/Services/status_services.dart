@@ -76,7 +76,7 @@ Future<List<status>> getCompletedDealStatus()async{
       await openBox();
     }
     for(var key in statusBox!.keys){
-      final selectedstatus = await statusBox!.get(key) as status;
+      final selectedstatus = statusBox!.get(key) as status;
       if(selectedstatus.cId == customerId){
         await statusBox!.delete(key);
       }
@@ -89,7 +89,7 @@ Future<List<status>> getCompletedDealStatus()async{
       await openBox();
     }
     for(var key in completedStatusBox!.keys){
-      final selectedstatus = await completedStatusBox!.get(key) as status;
+      final selectedstatus = completedStatusBox!.get(key) as status;
       if(selectedstatus.cId == customerId){
         await completedStatusBox!.delete(key);
       }
@@ -107,7 +107,7 @@ Future<List<status>> getCompletedDealStatus()async{
       await openBox();
     }
     for(var key in statusBox!.keys){
-      final Status = await statusBox!.get(key) as status;
+      final Status = statusBox!.get(key) as status;
       if(Status.cId == customerID){
         await statusBox!.put(key, updatedStatus);
         break;
@@ -122,14 +122,14 @@ Future<List<status>> getCompletedDealStatus()async{
       await openBox();
     }
     for(var key in completedStatusBox!.keys){
-      final Status = await completedStatusBox!.get(key) as status;
+      final Status = completedStatusBox!.get(key) as status;
       if(Status.cId == customerID){
         await completedStatusBox!.put(key, updatedStatus);
         break;
       }
     }
     for(var key in completedDealBox!.keys){
-      final Status = await completedDealBox!.get(key) as status;
+      final Status = completedDealBox!.get(key) as status;
       if(Status.cId == customerID){
         await completedDealBox!.put(key, updatedStatus);
         break;

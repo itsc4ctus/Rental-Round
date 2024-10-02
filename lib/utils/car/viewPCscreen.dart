@@ -19,7 +19,7 @@ class _ViewpcscreenState extends State<Viewpcscreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("POLUTION CERTIFICATE"),
+        title: const Text("POLUTION CERTIFICATE"),
       ),
       body: Center(
         child: Container(

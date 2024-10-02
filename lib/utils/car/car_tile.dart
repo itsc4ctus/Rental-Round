@@ -23,7 +23,7 @@ class CarTile extends StatefulWidget {
   final VoidCallback viewCar;
   final bool availability;
   const CarTile({
-    Key? key,
+    super.key,
     required this.carName,
     required this.vehicleNo,
     required this.kmDriven,
@@ -43,7 +43,7 @@ class CarTile extends StatefulWidget {
     required this.viewCar,
     required this.availability
 
-  }) : super(key: key);
+  });
 
   @override
   State<CarTile> createState() => _CarTileState();
@@ -83,17 +83,18 @@ class _CarTileState extends State<CarTile> {
                     ),
                     Container(
 
-                      child: Image(image: FileImage(File(widget.carImage))),
-                      padding: EdgeInsets.symmetric(vertical: 8),
+                      padding: const EdgeInsets.symmetric(vertical: 8),
                       height: 140,
                       width: 280,
+
+                      child: Image(image: FileImage(File(widget.carImage))),
                     ),
                     Container(
                       child: Column(
                         children: [
                           IconButton(
                             onPressed: widget.viewCar,
-                            icon: Icon(
+                            icon: const Icon(
                               CupertinoIcons.car_detailed,
                               color: Colors.black,
                             ),
@@ -103,7 +104,7 @@ class _CarTileState extends State<CarTile> {
                           ),
                           IconButton(
                             onPressed: widget.onEdit,
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.edit,
                               color: Colors.blue,
                             ),
@@ -142,7 +143,7 @@ class _CarTileState extends State<CarTile> {
                       children: [
                         Text(
                           widget.brandName,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 14,
                             fontFamily: 'Roboto',
@@ -163,7 +164,7 @@ class _CarTileState extends State<CarTile> {
                       children: [
                         Text(
                           widget.vehicleNo.toString(),
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 14,
                             fontFamily: 'Poppins',
                           ),
@@ -174,16 +175,16 @@ class _CarTileState extends State<CarTile> {
                             color: Colors.green.shade900,
                             ),
                             Text(widget.seatCapacity.toString()),
-                            SizedBox(width: 15),
+                            const SizedBox(width: 15),
                             Text(
                               widget.carType,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 20,
                                 fontFamily: 'Roboto',
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
-                            SizedBox(width: 15),
+                            const SizedBox(width: 15),
                             Container(
 
                               child: Center(
@@ -209,12 +210,12 @@ class _CarTileState extends State<CarTile> {
 void _showDialogue(String messege,String btnName,VoidCallback btnfn,BuildContext context){
     showDialog(context: context,builder: (context) {
       return AlertDialog(
-        title: Text("$messege"),
+        title: Text(messege),
         actions: [
           ElevatedButton(onPressed: (){
             Navigator.pop(context);
-          }, child: Text("CANCEL")),
-          ElevatedButton(onPressed: btnfn, child: Text("$btnName"))
+          }, child: const Text("CANCEL")),
+          ElevatedButton(onPressed: btnfn, child: Text(btnName))
         ],
       );
 

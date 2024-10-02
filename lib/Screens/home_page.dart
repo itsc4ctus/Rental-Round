@@ -9,7 +9,7 @@ import '../Models/car_model.dart';
 
 class HomePage extends StatefulWidget {
 
-   HomePage({ super.key});
+   const HomePage({ super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -54,7 +54,6 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _loadCars() async {
     List<Cars> car = await CarServices().getCar();
-    List<Cars> avCar = await CarServices().getAvailableCar();
     List<Cars> onHCar = await CarServices().getOnHoldCar();
     for (var cars in car) {
       bool isOnHold = onHCar.any((onHoldCar) => onHoldCar.vehicleNo == cars.vehicleNo);
@@ -73,11 +72,11 @@ class _HomePageState extends State<HomePage> {
 
 
 Future<void> _deleteCars(String vehicleNo)async{
-    bool carContains = await onHoldCars.any((car)=>car.vehicleNo == vehicleNo);
+    bool carContains = onHoldCars.any((car)=>car.vehicleNo == vehicleNo);
     if(carContains){
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: Colors.yellow.shade600,
-          content: Text("Can't delete,Car is On Hold!",
+          content: const Text("Can't delete,Car is On Hold!",
             style: TextStyle(
                 color: Colors.black
             ),
@@ -91,7 +90,7 @@ Future<void> _deleteCars(String vehicleNo)async{
         _loadCars();
       });
       Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           backgroundColor: Colors.red,
           content: Text("Car Deleted!",
             style: TextStyle(
@@ -102,12 +101,12 @@ Future<void> _deleteCars(String vehicleNo)async{
 
 }
 Future<void> _editCar(Cars editCar)async{
-    bool CarContain = await onHoldCars.any((car)=>car.vehicleNo == editCar.vehicleNo);
+    bool CarContain = onHoldCars.any((car)=>car.vehicleNo == editCar.vehicleNo);
 
     if(CarContain){
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: Colors.yellow.shade600,
-          content: Text("Can't edit,Car is On Hold!",
+          content: const Text("Can't edit,Car is On Hold!",
             style: TextStyle(
                 color: Colors.black
             ),
@@ -136,7 +135,7 @@ Future<void> _viewCar(Cars car)async{
     return Scaffold(
 
         body:homeCar.isEmpty ? Container(
-          child: Center(
+          child: const Center(
             child: Text("Add Car to Display!"),
           ),
         ) :
@@ -151,7 +150,7 @@ Future<void> _viewCar(Cars car)async{
                       padding: const EdgeInsets.all(8.0),
                       child: TextField(
                         controller: searchConroller,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelStyle: TextStyle(
                             fontFamily: "Roboto"
                           ),
@@ -167,15 +166,15 @@ Future<void> _viewCar(Cars car)async{
                   Container(
                       child: DropdownButton<String>(
                         value: filterValue,
-                          icon: Icon(Icons.menu),
-                          items: [
-                            DropdownMenuItem(child: Text("All Cars"),value: "all",),
-                            DropdownMenuItem(child: Text("EV"),value: "ev",),
-                            DropdownMenuItem(child: Text("CNG"),value: "cng",),
-                            DropdownMenuItem(child: Text("Petrol"),value: "petrol",),
-                            DropdownMenuItem(child: Text("Deisel"),value: "deisel",),
-                            DropdownMenuItem(child: Text("Automatic"),value: "automatic",),
-                            DropdownMenuItem(child: Text("Manual"),value: "manual",)
+                          icon: const Icon(Icons.menu),
+                          items: const [
+                            DropdownMenuItem(value: "all",child: Text("All Cars"),),
+                            DropdownMenuItem(value: "ev",child: Text("EV"),),
+                            DropdownMenuItem(value: "cng",child: Text("CNG"),),
+                            DropdownMenuItem(value: "petrol",child: Text("Petrol"),),
+                            DropdownMenuItem(value: "deisel",child: Text("Deisel"),),
+                            DropdownMenuItem(value: "automatic",child: Text("Automatic"),),
+                            DropdownMenuItem(value: "manual",child: Text("Manual"),)
                           ], onChanged: (String? newValue){
                           setState(() {
 
@@ -190,7 +189,7 @@ Future<void> _viewCar(Cars car)async{
             ),
             Expanded(
               child: Container(
-                child:filteredCar.isEmpty?Center(child: Text("No cars to display"),) : ListView.builder(
+                child:filteredCar.isEmpty?const Center(child: Text("No cars to display"),) : ListView.builder(
                   itemCount: filteredCar.length,
                   itemBuilder: (context, index) => CarTile(
                       carName: filteredCar[index].carName,

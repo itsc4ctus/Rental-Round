@@ -5,11 +5,10 @@ import 'package:rentel_round/Models/car_model.dart';
 import 'package:rentel_round/Models/status_model.dart';
 import 'package:rentel_round/Screens/Customer/bottomsheetcar_tile.dart';
 import 'package:rentel_round/Services/car_services.dart';
-import 'package:rentel_round/Services/status_services.dart';
 
 class CompletedCustomer extends StatefulWidget {
   final status customer;
-  CompletedCustomer({required this.customer, super.key});
+  const CompletedCustomer({required this.customer, super.key});
 
   @override
   State<CompletedCustomer> createState() => _CompletedCustomerState();
@@ -61,7 +60,7 @@ class _CompletedCustomerState extends State<CompletedCustomer> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.customer.cName, style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(widget.customer.cName, style: const TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
         elevation: 0,
       ),
@@ -72,7 +71,7 @@ class _CompletedCustomerState extends State<CompletedCustomer> {
           child: Column(
             children: [
               ClipRRect(
-                child: Container(
+                child: SizedBox(
                   height: 150,
                   width: 200,
 
@@ -82,7 +81,7 @@ class _CompletedCustomerState extends State<CompletedCustomer> {
                 ),
               ),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Customer Information Card
               _buildDetailCard("Customer Information", [
@@ -92,7 +91,7 @@ class _CompletedCustomerState extends State<CompletedCustomer> {
                 displayDetail("Extra Amount", widget.customer.extraAmount.toString()),
               ]),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
 
               _buildDetailCard("Car Used", [
@@ -114,7 +113,7 @@ class _CompletedCustomerState extends State<CompletedCustomer> {
                 ),
               ]),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
 
               _buildDetailCard("Rental Period", [
@@ -122,7 +121,7 @@ class _CompletedCustomerState extends State<CompletedCustomer> {
                 displayDetail("Returned Date", "${lastdateTime.day}-${monthToWords(widget.customer.endDate.month)}-${lastdateTime.year}"),
               ]),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
 
               _buildDetailCard("Payment", [
@@ -130,7 +129,7 @@ class _CompletedCustomerState extends State<CompletedCustomer> {
                 displayDetail("Amount Paid", widget.customer.amountReceived.toString()),
               ]),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
             ],
           ),
         ),
@@ -142,8 +141,8 @@ class _CompletedCustomerState extends State<CompletedCustomer> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(fieldName, style: TextStyle(fontWeight: FontWeight.w600)),
-        Text(value, style: TextStyle(color: Colors.black54)),
+        Text(fieldName, style: const TextStyle(fontWeight: FontWeight.w600)),
+        Text(value, style: const TextStyle(color: Colors.black54)),
       ],
     );
   }
@@ -158,8 +157,8 @@ class _CompletedCustomerState extends State<CompletedCustomer> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            SizedBox(height: 10),
+            Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 10),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: children,

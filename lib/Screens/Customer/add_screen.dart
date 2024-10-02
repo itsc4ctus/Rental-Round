@@ -1,12 +1,10 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rentel_round/Models/car_model.dart';
 import 'package:rentel_round/Screens/Customer/bottomsheetcar_tile.dart';
 import 'package:rentel_round/Screens/Customer/customerFeilds.dart';
-import 'package:rentel_round/Screens/Status/status_screen.dart';
 import 'package:rentel_round/Services/car_services.dart';
 import 'package:rentel_round/Services/status_services.dart';
 
@@ -235,7 +233,7 @@ void _clearFeilds(){
                               width: 140,
                               child: const Icon(CupertinoIcons.car_detailed),
                             )
-                          : Container(
+                          : SizedBox(
                               height: 200,
                               width: 200,
                               child: SingleChildScrollView(
@@ -315,7 +313,7 @@ void _clearFeilds(){
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Row(
@@ -338,12 +336,12 @@ void _clearFeilds(){
                           if (_key.currentState!.validate()) {
                             if (proofImg == null) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text("Add Proof Image!")));
+                                  const SnackBar(content: Text("Add Proof Image!")));
                               return;
                             }
                             if (selectedCar == null) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text("Select A Car!")));
+                                  const SnackBar(content: Text("Select A Car!")));
                               return;
                             }
                             _showDialogue("Click OK to add customer.", "OK", (){
@@ -364,7 +362,7 @@ void _clearFeilds(){
                               moveToOnHold(selectedCar!, selectedCar!.vehicleNo);
                               Navigator.pop(context);
                               widget.goToStatus(1);
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                                   backgroundColor: Colors.green,
                                   content: Text("New Deal Started!",
                                     style: TextStyle(
@@ -425,7 +423,7 @@ void _clearFeilds(){
 
   Future _noCarsAvailable(){
     return showModalBottomSheet(context: context, builder: (context) {
-      return Center(
+      return const Center(
         child: Text("No Cars are available"),
       );
     } ,);
@@ -476,12 +474,12 @@ void _clearFeilds(){
   void _showDialogue(String messege,String btnName,VoidCallback btnfn,BuildContext context){
     showDialog(context: context,builder: (context) {
       return AlertDialog(
-        title: Text("$messege"),
+        title: Text(messege),
         actions: [
           ElevatedButton(onPressed: (){
             Navigator.pop(context);
-          }, child: Text("CANCEL")),
-          ElevatedButton(onPressed: btnfn, child: Text("$btnName"))
+          }, child: const Text("CANCEL")),
+          ElevatedButton(onPressed: btnfn, child: Text(btnName))
         ],
       );
 

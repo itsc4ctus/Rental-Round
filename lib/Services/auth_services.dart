@@ -63,7 +63,7 @@ Future<bool?> getloginStatus()async{
     if(_authBox==null){
       await openBox();
     }
-    int? lastUserIndex =   await _lastLoginIndex!.get("index");
+    int? lastUserIndex =   _lastLoginIndex!.get("index");
     if(lastUserIndex != null){
       return _authBox!.get(lastUserIndex);
     }else{

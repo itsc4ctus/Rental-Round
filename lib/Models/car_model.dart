@@ -20,6 +20,8 @@ class Cars {
     required this.brandName,
     required this.carType,
      this.availability=true,
+    this.servicedDate,
+    this.serviceAmount=0,
   });
 
   @HiveField(0)
@@ -67,4 +69,11 @@ class Cars {
 
   @HiveField(14)
   late bool availability;
+
+  @HiveField(15)
+  DateTime? servicedDate;
+
+  @HiveField(16)
+  int serviceAmount ;
+
 }

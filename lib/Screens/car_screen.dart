@@ -11,7 +11,7 @@ import '../utils/car/View Car/viewcar_screen.dart';
 
 class CarScreen extends StatefulWidget {
 
- CarScreen({ super.key});
+ const CarScreen({ super.key});
 
   @override
   State<CarScreen> createState() => _CarScreenState();
@@ -56,7 +56,7 @@ bool? availability;
     if(carContains){
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: Colors.yellow.shade600,
-          content: Text("Can't edit,Car is On Hold!",
+          content: const Text("Can't edit,Car is On Hold!",
           style: TextStyle(
             color: Colors.black
           ),
@@ -71,11 +71,11 @@ bool? availability;
     Navigator.pop(context);
   }}
   Future<void> _editCar(Cars editCar)async{
-    bool carOnHold = await onHoldCars.any((car)=>car.vehicleNo == editCar.vehicleNo);
+    bool carOnHold = onHoldCars.any((car)=>car.vehicleNo == editCar.vehicleNo);
     if(carOnHold){
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: Colors.yellow.shade600,
-          content: Text("Can't delete,Car is On Hold!",
+          content: const Text("Can't delete,Car is On Hold!",
             style: TextStyle(
                 color: Colors.black
             ),
@@ -124,14 +124,14 @@ switch(_selectedIndex){
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.black,
         onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => AddcarScreen(),));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const AddcarScreen(),));
         },
-        child: Icon(Icons.add_circle_outline_rounded,color: Colors.white,),
+        child: const Icon(Icons.add_circle_outline_rounded,color: Colors.white,),
       ),
       body: Column(
         children: [
           Container(
-            margin: EdgeInsets.all(10),
+            margin: const EdgeInsets.all(10),
             decoration: BoxDecoration(
                 border: Border.all(),
               borderRadius: BorderRadius.circular(10)
@@ -157,7 +157,7 @@ setState(() {
 
           Expanded(
             child: displayedCars.isEmpty
-                ? Center(child: Text("No cars to display"))
+                ? const Center(child: Text("No cars to display"))
                 : ListView.builder(
               itemCount: displayedCars.length,
               itemBuilder: (context, index) => CarTile(
