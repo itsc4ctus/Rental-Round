@@ -24,6 +24,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
   int totalOtherExp=0;
   int profit=0;
   List<status> CStatusList =[];
+
   @override
   void initState() {
     _loadCompletedStatus();

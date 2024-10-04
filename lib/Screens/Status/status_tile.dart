@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:rentel_round/Screens/Status/showDeal.dart';
+import 'package:rentel_round/Screens/Status/viewImage.dart';
 import 'package:rentel_round/Services/car_services.dart';
 
 import '../../Models/car_model.dart';
@@ -79,14 +80,19 @@ class _StatusTileState extends State<StatusTile> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
 
-                Container(
-                  height: 80,
-                  width: 80,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    image: DecorationImage(
-                      image: FileImage(File(widget.proofImage)),
-                      fit: BoxFit.cover,
+                InkWell(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ViewImage(image: widget.proofImage),));
+                  },
+                  child: Container(
+                    height: 80,
+                    width: 80,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      image: DecorationImage(
+                        image: FileImage(File(widget.proofImage)),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),

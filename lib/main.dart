@@ -10,7 +10,7 @@ import 'package:rentel_round/Services/status_services.dart';
 
 import 'Models/car_model.dart';
 import 'Models/status_model.dart';
-import 'Screens/splash_screen.dart';
+import 'Screens/Splash Screen/splash_screen.dart';
 
 void main() async{
   await Hive.initFlutter();

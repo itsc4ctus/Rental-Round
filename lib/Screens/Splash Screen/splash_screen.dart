@@ -4,7 +4,9 @@ import 'package:rentel_round/Models/auth_model.dart';
 import 'package:rentel_round/Services/auth_services.dart';
 import 'package:rentel_round/Services/car_services.dart';
 
-import 'navbar.dart';
+import '../Navbar Screen/navbar.dart';
+
+
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

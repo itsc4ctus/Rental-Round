@@ -70,7 +70,7 @@ Future<void> updateStatusTM(int totalAmt,status completedStatus)async {
     setState(() {
       int newKm = int.tryParse(extraKmDrivenController.text) ?? widget.kmDriven;
       extraKmDriven = (newKm - widget.kmDriven);
-      int extraCharges = (extraKmDriven ~/ 50) * widget.extraAmount;
+      int extraCharges = extraKmDriven * widget.extraAmount;
       totalAmount = widget.carAmount + extraCharges - widget.advAmount;
       totalAmount > 0 ? totalAmount = totalAmount  : totalAmount=0;
     });
@@ -116,6 +116,16 @@ Future<void> updateStatusTM(int totalAmt,status completedStatus)async {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      const Text("Old KM"),
+                      Text(": ${widget.kmDriven}"),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
                       const Text("Amount of Car/day"),
                       Text(": ${widget.carAmount}"),
                     ],
@@ -136,7 +146,7 @@ Future<void> updateStatusTM(int totalAmt,status completedStatus)async {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text("Amount / 50KM"),
+                      const Text("Amount per KM"),
                       Text(": ${widget.extraAmount}"),
                     ],
                   ),

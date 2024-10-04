@@ -7,13 +7,14 @@ import 'package:rentel_round/Screens/Drawer%20Screens/privacy_policy.dart';
 import 'package:rentel_round/Screens/Drawer%20Screens/profile_screen.dart';
 import 'package:rentel_round/Screens/Customer/add_screen.dart';
 import 'package:rentel_round/Screens/Budget%20Screen/budget_screen.dart';
-import 'package:rentel_round/Screens/car_screen.dart';
+
 import 'package:rentel_round/Screens/Status/status_screen.dart';
 import 'package:rentel_round/Services/auth_services.dart';
 import 'package:rentel_round/Services/car_services.dart';
-import 'package:rentel_round/utils/car/Car%20Service/Car_Service.dart';
-import '../Models/auth_model.dart';
-import 'home_page.dart';
+import '../../Models/auth_model.dart';
+import '../Car Screen/Car Service/Car_Service.dart';
+import '../Car Screen/car_screen.dart';
+import '../Home Screen/home_page.dart';
 
 
 class NavBar extends StatefulWidget {

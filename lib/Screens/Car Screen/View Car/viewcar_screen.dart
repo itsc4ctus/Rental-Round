@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:rentel_round/utils/car/View%20Car/viewcartiles.dart';
-import 'package:rentel_round/utils/car/viewPCscreen.dart';
-import 'package:rentel_round/utils/car/viewRcscreen.dart';
+import 'package:rentel_round/Screens/Car%20Screen/View%20Car/viewcartiles.dart';
+
+
 
 import '../../../Models/car_model.dart';
+import '../viewPCscreen.dart';
+import '../viewRcscreen.dart';
 
 class ViewcarScreen extends StatefulWidget {
   final Cars car;

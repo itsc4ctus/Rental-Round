@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rentel_round/Authentication/Screens/signup_page.dart';
 import 'package:rentel_round/Models/auth_model.dart';
-import 'package:rentel_round/Screens/navbar.dart';
+import 'package:rentel_round/Screens/Navbar%20Screen/navbar.dart';
 import 'package:rentel_round/Services/auth_services.dart';
 
 
