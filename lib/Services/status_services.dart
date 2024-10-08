@@ -16,6 +16,7 @@ class StatusServices{
   Future<void> closeBox() async{
     await statusBox!.close();
     await completedStatusBox!.close();
+    completedDealBox!.close();
   }
 
   Future<void> addStatus(status status)async{

@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import '../../Models/car_model.dart';
+import '../../../Models/car_model.dart';
 
 class ServicedCarTile extends StatefulWidget {
    ServicedCarTile({required this.car, super.key});

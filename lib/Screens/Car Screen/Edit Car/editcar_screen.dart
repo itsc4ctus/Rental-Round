@@ -7,6 +7,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:rentel_round/Models/car_model.dart';
 import 'package:rentel_round/Services/car_services.dart';
 
+import 'Widgets/image.dart';
+import 'Widgets/numberFeilds.dart';
+
 class EditCarScreen extends StatefulWidget {
 
   final Cars car;
@@ -101,26 +104,7 @@ class _EditCarScreenState extends State<EditCarScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: carImage == null
-                              ? Container(
-                            height: 130,
-                            width: 180,
-                            color: Colors.grey.shade500,
-                            child: Center(
-                                child: Icon(
-                                  CupertinoIcons.creditcard,
-                                  size: 50,
-                                  color: Colors.grey.shade600,
-                                )),
-                          )
-                              : Image(
-                            image: FileImage(File(carImage!.path)),
-                            height: 130,
-                            width: 180,
-                            fit: BoxFit.cover,
-                          )),
+                      EditCarImage(carImage: carImage),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -147,10 +131,7 @@ class _EditCarScreenState extends State<EditCarScreen> {
                     ],
                   ),
                   const SizedBox(
-                    height: 10,
-                  ),
-                  const SizedBox(
-                    height: 10,
+                    height: 20,
                   ),
                   TextFormField(
                     validator: (value){
@@ -163,11 +144,11 @@ class _EditCarScreenState extends State<EditCarScreen> {
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
-                      hintStyle: const TextStyle(
+                      hintStyle: TextStyle(
                         fontFamily: 'Roboto',
                       ),
                       hintText: "enter your car name",
-                      label: const Text(
+                      label: Text(
                         "car name",
                         style: TextStyle(fontFamily: "Roboto"),
                       ),
@@ -343,60 +324,8 @@ class _EditCarScreenState extends State<EditCarScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SizedBox(
-                        width: 110,
-                        child: TextFormField(
-                          validator: (value){
-                            if(value==null || value == ""){
-                              return "please fill valid feild";
-                            }
-                            return null;
-                          },  inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                          keyboardType: TextInputType.number,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          controller: ccController,
-                          decoration: InputDecoration(
-                            hintStyle: const TextStyle(
-                              fontFamily: 'Roboto',
-                            ),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            label: const Text(
-                              "CC",
-                              style: TextStyle(fontFamily: "Roboto"),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 110,
-                        child: TextFormField(
-                          validator: (value){
-                            if(value==null || value == ""){
-                              return "please fill valid feild";
-                            }
-                            return null;
-                          },  inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                          keyboardType: TextInputType.number,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          controller: kmdrivenController,
-                          decoration: InputDecoration(
-                            hintStyle: const TextStyle(
-                              fontFamily: 'Roboto',
-                            ),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            label: const Text(
-                              "KM driven",
-                              style: TextStyle(fontFamily: "Roboto"),
-                            ),
-                          ),
-                        ),
-                      ),
+                      InputFeilds(ccController: ccController,label: "CC",),
+                      InputFeilds(ccController: kmdrivenController,label: "KM Driven"),
                       SizedBox(
                         width: 120,
                         child: DropdownButton<String>(
@@ -427,62 +356,8 @@ class _EditCarScreenState extends State<EditCarScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SizedBox(
-                        width: 110,
-                        child: TextFormField(
-                          validator: (value){
-                            if(value==null || value == ""){
-                              return "please fill valid feild";
-                            }
-                            return null;
-                          },
-                          controller: amountController,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          keyboardType: TextInputType.number,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          decoration: InputDecoration(
-                            suffixIcon: const Icon(Icons.currency_rupee),
-                            hintStyle: const TextStyle(
-                              fontFamily: 'Roboto',
-                            ),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            label: const Text(
-                              "amount",
-                              style: TextStyle(fontFamily: "Roboto"),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 110,
-                        child: TextFormField(
-                          validator: (value){
-                            if(value==null || value == ""){
-                              return "please fill valid feild";
-                            }
-                            return null;
-                          },  inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                          keyboardType: TextInputType.number,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          controller: seatCapacityController,
-                          decoration: InputDecoration(
-                            hintStyle: const TextStyle(
-                              fontFamily: 'Roboto',
-                            ),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            label: const Text(
-                              "seat capacity",
-                              style: TextStyle(fontFamily: "Roboto"),
-                            ),
-                          ),
-                        ),
-                      ),
+                      InputFeilds(ccController: amountController, label: "amount"),
+                      InputFeilds(ccController: seatCapacityController, label: "seat capacity"),
                       SizedBox(
                           width: 120,
                           child: DropdownButton<String>(

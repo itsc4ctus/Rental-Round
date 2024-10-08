@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rentel_round/Screens/Car%20Screen/Car%20Service/renew_pollution.dart';
+import 'package:rentel_round/Screens/Car%20Screen/View%20Car/viewcar_screen.dart';
 
 
 
@@ -23,6 +24,7 @@ class CarToService extends StatefulWidget {
 }
 
 class _CarToServiceState extends State<CarToService> {
+  List<Cars> servicedCars = [];
   @override
   void initState() {
     pollutionDate = widget.pollutionDate;
@@ -49,7 +51,11 @@ class _CarToServiceState extends State<CarToService> {
             SizedBox(
               height: 100,
               width: 100,
-              child: Image(image: FileImage(File(widget.image)),),
+              child: InkWell(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ViewcarScreen(car: widget.car),));
+                  },
+                  child: Image(image: FileImage(File(widget.image)),)),
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -103,34 +109,4 @@ class _CarToServiceState extends State<CarToService> {
       ],
     ));
   }
-  Future<void> _renewPollution()async{
-
-    return showDialog(context: context, builder: (context) => AlertDialog(
-      title: const Text("PICK THE RENEWEL DATE"),
-      content: Container(
-        child: Column(
-          children: [
-            CupertinoButton(child: Text("${pollutionDate.day} - ${pollutionDate.month} - ${pollutionDate.year}"), onPressed: (){
-               showCupertinoModalPopup(context: context, builder: (context) => SizedBox(
-                 height: 250,
-                 child: CupertinoDatePicker(
-                   minimumDate: DateTime.now(),
-                   mode: CupertinoDatePickerMode.date,
-                     backgroundColor: Colors.white,
-                     onDateTimeChanged: (DateTime newValue){
-                   setState(() {
-                     pollutionDate = newValue;
-                   });
-                 }),
-               ),);
-            })
-          ],
-        ),
-      ),
-    ));
-  }
-
-
-
-
 }

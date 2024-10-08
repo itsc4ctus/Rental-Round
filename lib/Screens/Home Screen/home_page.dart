@@ -2,39 +2,48 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rentel_round/Screens/Home%20Screen/Widgets/filterItems.dart';
 import 'package:rentel_round/Services/car_services.dart';
+import '../../Authentication/Screens/login_page.dart';
+import '../../Models/auth_model.dart';
 import '../../Models/car_model.dart';
+import '../../Services/auth_services.dart';
+import '../Car Screen/Car Service/Car_Service.dart';
 import '../Car Screen/View Car/viewcar_screen.dart';
 import '../Car Screen/car_tile.dart';
-import '../Car Screen/editcar_screen.dart';
+import '../Car Screen/Edit Car/editcar_screen.dart';
+import '../Drawer Screens/about_app.dart';
+import '../Drawer Screens/privacy_policy.dart';
+import '../Drawer Screens/profile_screen.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  late Auth auth;
+   HomePage({required this.auth,super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  // Search and filter variables
+
+
   String filterValue = "all";
   TextEditingController searchController = TextEditingController();
   List<Cars> homeCar = [];
   List<Cars> onHoldCars = [];
   List<Cars> filteredCar = [];
-
-  // Initial filter state
   bool petrolSelected = false;
   bool dieselSelected = false;
   bool cngSelected = false;
   bool electricSelected = false;
   bool automaticSelected = false;
   bool manualSelected = false;
-  int selectedSeats = 0; // Track the number of seats selected
-
+  bool avCar = false;
+  int selectedSeats = 0;
+bool filterColor = false;
   @override
   void initState() {
+
     _loadCars();
-    searchController.addListener(_applyFilters); // Update filter on search
+    searchController.addListener(_applyFilters);
     super.initState();
   }
 
@@ -44,7 +53,7 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
-  // Load cars from the service
+
   Future<void> _loadCars() async {
     List<Cars> car = await CarServices().getCar();
     List<Cars> onHCar = await CarServices().getOnHoldCar();
@@ -60,44 +69,49 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  // Apply filters (search, fuel type, transmission, seat capacity)
+
   void _applyFilters() {
     String query = searchController.text.toLowerCase();
-
     filteredCar = homeCar.where((car) {
       bool matchesQuery = car.carName.toLowerCase().contains(query);
-
-      // Fuel type filter
       bool matchesFuelType =
           (petrolSelected && car.fuelType.toLowerCase() == 'petrol') ||
-              (dieselSelected && car.fuelType.toLowerCase() == 'diesel') ||
+              (dieselSelected && car.fuelType.toLowerCase() == 'deisel') ||
               (cngSelected && car.fuelType.toLowerCase() == 'cng') ||
               (electricSelected && car.fuelType.toLowerCase() == 'electric') ||
               (!petrolSelected &&
                   !dieselSelected &&
                   !cngSelected &&
                   !electricSelected);
-
-      // Transmission type filter
       bool matchesTransmission =
-          (automaticSelected && car.carType.toLowerCase() == 'automatic') ||
-              (manualSelected && car.carType.toLowerCase() == 'manual') ||
+          (automaticSelected && car.carType.toLowerCase() == 'a') ||
+              (manualSelected && car.carType.toLowerCase() == 'm') ||
               (!automaticSelected && !manualSelected);
-
-      // Seat capacity filter
       bool matchesSeats =
           selectedSeats == 0 || car.seatCapacity == selectedSeats;
+bool matchAvailability = !avCar ||(avCar && car.availability == true);
 
       return matchesQuery &&
           matchesFuelType &&
           matchesTransmission &&
+          matchAvailability &&
           matchesSeats;
     }).toList();
+    bool anyFilterApplied = petrolSelected ||
+        dieselSelected ||
+        cngSelected ||
+        electricSelected ||
+        automaticSelected ||
+        manualSelected ||
+        avCar ||
+        selectedSeats > 0;
+    setState(() {
+      filterColor = anyFilterApplied;
+    });
 
-    setState(() {});
   }
 
-  // Handle car deletion
+
   Future<void> _deleteCars(String vehicleNo) async {
     bool carContains = onHoldCars.any((car) => car.vehicleNo == vehicleNo);
     if (carContains) {
@@ -126,7 +140,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  // Handle car edit
+
   Future<void> _editCar(Cars editCar) async {
     bool carContain =
         onHoldCars.any((car) => car.vehicleNo == editCar.vehicleNo);
@@ -149,7 +163,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  // View car details
+
   Future<void> _viewCar(Cars car) async {
     await Navigator.push(
       context,
@@ -165,14 +179,17 @@ class _HomePageState extends State<HomePage> {
     bool tempAutomaticSelected = automaticSelected;
     bool tempManualSelected = manualSelected;
     int tempSelectedSeats = selectedSeats;
+    bool tempAvcar = avCar;
 
     showModalBottomSheet(
+      isDismissible: false,
+      enableDrag: false,
       context: context,
       builder: (context) {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setModalState) {
             return Padding(
-              padding: const EdgeInsets.all(15.0),
+              padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 10),
               child: SingleChildScrollView(
                 child: Container(
                   padding: const EdgeInsets.all(12.0),
@@ -254,9 +271,26 @@ class _HomePageState extends State<HomePage> {
                 _applyFilters();
               });
                         }),
+
                   ],
                 ),
+
               ),
+                      const SizedBox(height: 10),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(),
+
+                        ),
+                        child: filterItems.filterFeild("AVAILABLE", tempAvcar,
+                                (value) {
+                              setModalState(() {
+                                tempAvcar = value!;
+                                avCar = tempAvcar;
+                                _applyFilters();
+                              });
+                            }),
+                      ),
                       const SizedBox(height: 10),
                       const Text("NUMBER OF SEATS"),
                       SizedBox(
@@ -309,30 +343,53 @@ class _HomePageState extends State<HomePage> {
                           }, "", tempSelectedSeats == 6),
                         ],
                       ),
-                      ElevatedButton(
-                          onPressed: () {
-                            setModalState(() {
-                              tempPetrolSelected = false;
-                              tempDieselSelected = false;
-                              tempCngSelected = false;
-                              tempElectricSelected = false;
-                              tempAutomaticSelected = false;
-                              tempManualSelected = false;
-                              tempSelectedSeats = 0;
-                            });
-                            setState(() {
-                              petrolSelected = false;
-                              dieselSelected = false;
-                              cngSelected = false;
-                              electricSelected = false;
-                              automaticSelected = false;
-                              manualSelected = false;
-                              selectedSeats = 0;
-                            });
-                            _applyFilters();
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          SizedBox(
+                            width: 5,
+                          ),
+                          ElevatedButton(
+                              onPressed: () {
+                                setModalState(() {
+                                  tempPetrolSelected = false;
+                                  tempDieselSelected = false;
+                                  tempCngSelected = false;
+                                  tempElectricSelected = false;
+                                  tempAutomaticSelected = false;
+                                  tempManualSelected = false;
+                                  tempAvcar =false;
+                                  tempSelectedSeats = 0;
+                                });
+                                setState(() {
+                                  petrolSelected = false;
+                                  dieselSelected = false;
+                                  cngSelected = false;
+                                  electricSelected = false;
+                                  automaticSelected = false;
+                                  manualSelected = false;
+                                  avCar = false;
+                                  selectedSeats = 0;
+                                });
+                                _applyFilters();
+                                Navigator.pop(context);
+                                FocusScope.of(context).unfocus();
+                              },
+                              child: Text("RESET")),
+                          ElevatedButton(onPressed: (){
                             Navigator.pop(context);
-                          },
-                          child: Text("RESET"))
+                            FocusScope.of(context).unfocus();
+                          }, child: Text("APPLY")),
+
+                          SizedBox(
+                            width: 5,
+                          ),
+                        ],
+                      ),
+
                     ],
                   ),
                 ),
@@ -346,71 +403,188 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final AuthServices authServices = AuthServices();
     return GestureDetector(
-      onTap: () {
+      onTap: (){
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        body: homeCar.isEmpty
-            ? const Center(child: Text("Add Car to Display!"))
-            : Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+        appBar: AppBar(
+          iconTheme: const IconThemeData(
+              color: Colors.white
+          ),
+          centerTitle: true,
+          title: const Text("RENTAL ROUND",
+
+          ),
+
+        ),
+        drawer: Drawer(
+          child: Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const SizedBox(
+                  height: 50,
+                ),
+                const Text("RENTAL\nROUND",textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontFamily: "jaro",
+                      fontSize: 24,
+                      color: Colors.black
+                  ),),
+
+
+
+                Container(
+                  child: Column(
                     children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextField(
-                            controller: searchController,
-                            decoration: const InputDecoration(
-                              labelText: "Search",
-                              hintText: "Search...",
-                              border: OutlineInputBorder(),
-                              suffixIcon:
-                                  Icon(CupertinoIcons.search_circle_fill),
-                            ),
-                          ),
-                        ),
+                      ListTile(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfileScreen(auth: widget.auth)));
+                        },
+                        leading: const Icon(CupertinoIcons.profile_circled),
+                        title: const Text("View Profile"),
+
                       ),
-                      IconButton(
-                        onPressed: () => _showFilterBottomSheet(context),
-                        icon:
-                            Icon(Icons.filter_alt, color: Colors.blue.shade900),
+                      ListTile(
+                        onTap:(){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => CarServiceScreen(),));
+                        },
+                        leading: const Icon(Icons.car_repair_rounded),
+                        title: const Text("Car Services"),
+                      ),
+                      const ListTile(
+                        leading: Icon(CupertinoIcons.settings_solid),
+                        title: Text("Settings"),
+                      ),
+                      ListTile(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const PrivacyPolicy(),));
+                        },
+                        leading: const Icon(Icons.privacy_tip),
+                        title: const Text("Privacy Policy"),
+                      ),
+                      ListTile(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const AboutApp()));
+                        },
+                        leading: const Icon(Icons.info_outline),
+                        title: const Text("About App"),
                       ),
                     ],
                   ),
-                  Expanded(
-                    child: filteredCar.isEmpty
-                        ? const Center(child: Text("No cars to display"))
-                        : ListView.builder(
-                            itemCount: filteredCar.length,
-                            itemBuilder: (context, index) => CarTile(
-                              carName: filteredCar[index].carName,
-                              vehicleNo: filteredCar[index].vehicleNo,
-                              kmDriven: filteredCar[index].kmDriven,
-                              seatCapacity: filteredCar[index].seatCapacity,
-                              cubicCapacity: filteredCar[index].rcNo,
-                              pollutionDate: filteredCar[index].pollutionDate,
-                              fuelType: filteredCar[index].fuelType,
-                              amtPerDay: filteredCar[index].amtPerDay,
-                              carImage: filteredCar[index].carImage,
-                              brandName: filteredCar[index].brandName,
-                              carType: filteredCar[index].carType,
-                              pcImage: filteredCar[index].pcImage,
-                              rcImage: filteredCar[index].rcImage,
-                              rcNo: filteredCar[index].rcNo,
-                              onDelete: () =>
-                                  _deleteCars(filteredCar[index].vehicleNo),
-                              onEdit: () => _editCar(filteredCar[index]),
-                              viewCar: () => _viewCar(filteredCar[index]),
-                              availability: filteredCar[index].availability,
+
+                ),
+                const SizedBox(
+                  height: 250,
+                ),
+                Container(
+                    padding: const EdgeInsets.symmetric(vertical: 0,horizontal: 50),
+                    width:double.infinity,
+                    child: ElevatedButton(onPressed: ()async{
+                      _showDialogue("Do you want to Logout?", "Logout", (){ Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginPage(),));}, context);
+                      await authServices.setLoginStatus(false);
+                      await CarServices().cloaseBox();
+                    }, child: const Text("Log Out",
+                      style: TextStyle(
+                          color: Colors.white
+                      ),
+                    ))),
+                const SizedBox(
+
+                  width: 50,
+                )
+              ],
+            ),
+          ),
+        ),
+        body: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: Scaffold(
+            body: homeCar.isEmpty
+                ? const Center(child: Text("Add Car to Display!"))
+                : Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextField(
+                                controller: searchController,
+                                decoration: const InputDecoration(
+                                  labelText: "Search",
+                                  hintText: "Search...",
+                                  border: OutlineInputBorder(),
+                                  suffixIcon:
+                                      Icon(CupertinoIcons.search_circle_fill),
+                                ),
+                              ),
                             ),
                           ),
+                          IconButton(
+                            onPressed: () {
+                              FocusScope.of(context).unfocus();
+                              _showFilterBottomSheet(context);
+
+                            },
+                            icon:
+                                Icon(Icons.filter_alt, color:filterColor ?Colors.green : Colors.grey),
+                          ),
+                        ],
+                      ),
+                      Expanded(
+                        child: filteredCar.isEmpty
+                            ? const Center(child: Text("No cars to display"))
+                            : ListView.builder(
+                                itemCount: filteredCar.length,
+                                itemBuilder: (context, index) => CarTile(
+                                  carName: filteredCar[index].carName,
+                                  vehicleNo: filteredCar[index].vehicleNo,
+                                  kmDriven: filteredCar[index].kmDriven,
+                                  seatCapacity: filteredCar[index].seatCapacity,
+                                  cubicCapacity: filteredCar[index].rcNo,
+                                  pollutionDate: filteredCar[index].pollutionDate,
+                                  fuelType: filteredCar[index].fuelType,
+                                  amtPerDay: filteredCar[index].amtPerDay,
+                                  carImage: filteredCar[index].carImage,
+                                  brandName: filteredCar[index].brandName,
+                                  carType: filteredCar[index].carType,
+                                  pcImage: filteredCar[index].pcImage,
+                                  rcImage: filteredCar[index].rcImage,
+                                  rcNo: filteredCar[index].rcNo,
+                                  onDelete: () =>
+                                      _deleteCars(filteredCar[index].vehicleNo),
+                                  onEdit: () => _editCar(filteredCar[index]),
+                                  viewCar: () => _viewCar(filteredCar[index]),
+                                  availability: filteredCar[index].availability,
+                                ),
+                              ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+          ),
+        ),
       ),
     );
+  }
+  void _showDialogue(String messege,String btnName,VoidCallback btnfn,BuildContext context){
+    showDialog(context: context,builder: (context) {
+      return AlertDialog(
+        title: Text(messege),
+        actions: [
+          ElevatedButton(onPressed: (){
+            Navigator.pop(context);
+          }, child: const Text("CANCEL")),
+          ElevatedButton(onPressed: btnfn, child: Text(btnName))
+        ],
+      );
+
+    });
+
   }
 }

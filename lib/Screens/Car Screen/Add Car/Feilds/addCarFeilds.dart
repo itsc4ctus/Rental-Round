@@ -8,10 +8,12 @@ class AddCarFeilds {
     String labelName,
     String hintText,
     TextEditingController controller,
-      [TextInputType keyboardtype=TextInputType.text,List<TextInputFormatter> textOnly =const [],bool obscureText=false]
+      [TextInputType keyboardtype=TextInputType.text,List<TextInputFormatter> textOnly =const [],bool obscureText=false,
+      String? Function(String?)? validator,
+      ]
       ) {
     return TextFormField(
-      validator: (value) {
+      validator:validator ?? (value) {
         if (value == null || value == "") {
           return "$errorMsg";
         }
@@ -39,10 +41,12 @@ class AddCarFeilds {
       String errorMsg,
       String labelName,
       TextEditingController controller,
-      [TextInputType keyboardtype=TextInputType.text,List<TextInputFormatter> textOnly =const [],bool obscureText=false]
+      [TextInputType keyboardtype=TextInputType.text,List<TextInputFormatter> textOnly =const [],bool obscureText=false,
+      String? Function(String?)? validator,
+      ]
       ) {
     return TextFormField(
-      validator: (value) {
+      validator:validator?? (value) {
         if (value == null || value == "") {
           return "$errorMsg";
         }

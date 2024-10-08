@@ -14,7 +14,7 @@ class ShowDeal extends StatefulWidget {
   final Cars selectedCar;
 
 
-  const ShowDeal({super.key, 
+  const ShowDeal({super.key,
     required this.carAmount,
     required this.advAmount,
     required this.extraAmount,
@@ -31,15 +31,17 @@ required this.Status,
 class _ShowDealState extends State<ShowDeal> {
   int extraKmDriven = 0;
   int totalAmount = 0;
-
+late int noOfDays;
+late int hours;
   TextEditingController extraKmDrivenController = TextEditingController();
   TextEditingController amountController = TextEditingController();
 final GlobalKey<FormState> _key = GlobalKey();
   @override
   void initState() {
-
     extraKmDrivenController = TextEditingController(text: widget.kmDriven.toString());
+    noOfDays = widget.Status.endDate.difference(widget.Status.startDate).inHours+1;
     calculateExtraKm();
+
     // TODO: implement initState
     super.initState();
   }
@@ -67,22 +69,28 @@ Future<void> updateStatusTM(int totalAmt,status completedStatus)async {
 }
 
   void calculateExtraKm() {
+
     setState(() {
-      int newKm = int.tryParse(extraKmDrivenController.text) ?? widget.kmDriven;
-      extraKmDriven = (newKm - widget.kmDriven);
-      int extraCharges = extraKmDriven * widget.extraAmount;
-      totalAmount = widget.carAmount + extraCharges - widget.advAmount;
-      totalAmount > 0 ? totalAmount = totalAmount  : totalAmount=0;
+      noOfDays = widget.Status.endDate.difference(widget.Status.startDate).inDays+1;
+      hours = widget.Status.endDate.difference(widget.Status.startDate).inHours;
+      int freeKm = noOfDays*100;
+
+int newKm = int.tryParse(extraKmDrivenController.text) ?? widget.kmDriven;
+extraKmDriven = (newKm - widget.kmDriven) - freeKm;
+extraKmDriven <=0? extraKmDriven =0: extraKmDriven;
+int extraKmAmt = extraKmDriven*widget.Status.extraAmount;
+totalAmount = widget.Status.totalAmount - widget.advAmount + extraKmAmt ;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    calculateExtraKm();
     return AlertDialog(
       title: const Text("Deal"),
       content: SingleChildScrollView(
         child: SizedBox(
-          height: 450,
+          height: 560,
           child: Form(
             key: _key,
             child: Column(
@@ -136,6 +144,26 @@ Future<void> updateStatusTM(int totalAmt,status completedStatus)async {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      const Text("Number of Days"),
+                      Text(": ${noOfDays}"),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text("Amount to be paid"),
+                      Text(": ${widget.Status.totalAmount}"),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
                       const Text("Advance amount"),
                       Text(": ${widget.advAmount}"),
                     ],
@@ -156,7 +184,12 @@ Future<void> updateStatusTM(int totalAmt,status completedStatus)async {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text("Extra KM Driven"),
+                      Column(
+                        children: [
+                          Text("Extra KM Driven"),
+                          Text("(${noOfDays*100}KM is free)")
+                        ],
+                      ),
                       Text(": $extraKmDriven"),
                     ],
                   ),

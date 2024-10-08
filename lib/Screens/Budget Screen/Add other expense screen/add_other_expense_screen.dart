@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rentel_round/Models/expences_model.dart';
 import 'package:rentel_round/Services/expence_services.dart';
 
-import 'expense_screen.dart';
+import '../Expense screen/expense_screen.dart';
 
 class OtherExpScreen extends StatefulWidget {
   const OtherExpScreen({super.key});
@@ -18,7 +18,6 @@ class _OtherExpScreenState extends State<OtherExpScreen> {
 
   Future<void> addNewExpence(expenses Expence) async {
     await ExpenceServices().addExpenses(Expence);
-
   }
 
   @override
@@ -85,12 +84,9 @@ class _OtherExpScreenState extends State<OtherExpScreen> {
                                 id: DateTime.now().toString() +
                                     expNameController.text);
                             addNewExpence(newExpence);
-                            setState(() {
-
-                            });
+                            setState(() {});
                             Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ExpenseScreen(),), (route) => route.isFirst,);
                           }
-
                         },
                         child: const Text("ADD")),
                   ],
@@ -113,8 +109,6 @@ class _OtherExpScreenState extends State<OtherExpScreen> {
           ElevatedButton(onPressed: btnfn, child: Text(btnName))
         ],
       );
-
     });
-
   }
 }

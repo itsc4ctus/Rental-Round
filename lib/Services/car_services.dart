@@ -26,7 +26,11 @@ class CarServices{
     await _availableCarBox!.close();
     await _onHoldCarBox!.close();
     await _onServicingCarBox!.close();
+    await _onSerCarForExpense!.close();
 }
+
+
+
 
   //add car
 Future<void> addCar(Cars car) async{
@@ -70,6 +74,7 @@ Future<List<Cars>> getCar() async{
     await openBox();
   }
   return _carBox!.values.toList();
+
 }
 
   Future<List<Cars>> getAvailableCar() async{
@@ -99,6 +104,7 @@ Future<List<Cars>> getExpSerCar() async{
     }
     return _onSerCarForExpense!.values.toList();
 }
+
 
 
 
@@ -183,6 +189,9 @@ Future<void> deleteCar(String vehicleNo) async{
     if (_availableCarBox == null) {
       await openBox();
     }
+    if (_onSerCarForExpense == null) {
+      await openBox();
+    }
 
 
     for (var key in _carBox!.keys) {
@@ -198,7 +207,15 @@ Future<void> deleteCar(String vehicleNo) async{
       final avCar = _availableCarBox!.get(key);
       if (avCar != null && avCar.vehicleNo == vehicleNo) {
         await _availableCarBox!.put(key, updatedCar);
-        break; // Car found, no need to continue
+        break;
+      }
+    }
+
+    for (var key in _onSerCarForExpense!.keys) {
+      final avCar = _onSerCarForExpense!.get(key);
+      if (avCar != null && avCar.vehicleNo == vehicleNo) {
+        await _onSerCarForExpense!.put(key, updatedCar);
+        break;
       }
     }
   }

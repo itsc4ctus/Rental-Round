@@ -6,10 +6,12 @@ import 'package:rentel_round/Services/auth_services.dart';
 import 'package:rentel_round/Services/car_services.dart';
 import 'package:rentel_round/Services/expence_services.dart';
 import 'package:rentel_round/Services/status_services.dart';
+import 'package:rentel_round/Services/workshop_services.dart';
 
 
 import 'Models/car_model.dart';
 import 'Models/status_model.dart';
+import 'Models/workshop_model.dart';
 import 'Screens/Splash Screen/splash_screen.dart';
 
 void main() async{
@@ -18,10 +20,12 @@ void main() async{
   Hive.registerAdapter(CarsAdapter());
   Hive.registerAdapter(statusAdapter());
   Hive.registerAdapter(expensesAdapter());
+  Hive.registerAdapter(WorKShopModelAdapter());
   await AuthServices().openBox();
   await CarServices().openBox();
   await StatusServices().openBox();
   await ExpenceServices().openBox();
+  await WorkshopServices().openBox();
 
   runApp(const MyApp());
 }

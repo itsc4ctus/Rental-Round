@@ -39,6 +39,10 @@ class _StatusScreenState extends State<StatusScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("RENTEL ROUND"),
+        centerTitle: true,
+      ),
       body: Column(
         children: [
           Expanded(

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:rentel_round/Models/workshop_model.dart';
+import 'package:rentel_round/Screens/Car%20Screen/View%20Car/viewcar_screen.dart';
+import 'package:rentel_round/Services/expence_services.dart';
+import 'package:rentel_round/Services/workshop_services.dart';
 import 'dart:io';
 
 import '../../../Models/car_model.dart';
@@ -16,19 +20,25 @@ class CarOnService extends StatefulWidget {
 }
 
 class _CarOnServiceState extends State<CarOnService> {
+
+
+  Future<void> _takeWorkshop(WorKShopModel workshop)async{
+    await WorkshopServices().addWorkshop(workshop);
+  }
+
+
   Future<void>_takeDown(Cars car,int serviceCharge)async{
-    await CarServices().addAvailableCar(car);
     await CarServices().deleteOnHoldCar(car.vehicleNo);
     await CarServices().deleteServicedCar(car.vehicleNo);
-    await CarServices().getServicingCars();
-    car.servicedDate = DateTime.now();
-    await CarServices().updateCar(car.vehicleNo, car);
-    car.serviceAmount = serviceCharge;
     await CarServices().addExpSerCar(car);
+    car.servicedDate = DateTime.now();
+    car.serviceAmount = serviceCharge;
+    car.availability = true;
+    await CarServices().addAvailableCar(car);
     await CarServices().getExpSerCar();
-    setState(() {
-
-    });
+    await CarServices().getServicingCars();
+    await ExpenceServices().getExpenses();
+    await CarServices().updateCar(car.vehicleNo, car);
   }
   TextEditingController serviceChargeController = TextEditingController();
   final GlobalKey<FormState> _key = GlobalKey();
@@ -46,7 +56,11 @@ class _CarOnServiceState extends State<CarOnService> {
             SizedBox(
               height: 100,
               width: 100,
-              child: Image(image: FileImage(File(widget.image)),),
+              child: InkWell(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ViewcarScreen(car: widget.car),));
+                  },
+                  child: Image(image: FileImage(File(widget.image)),)),
             ),
 Column(
   children: [
@@ -74,10 +88,14 @@ Column(
                   ),
                 ),
               actions: [
-                ElevatedButton(onPressed: (){Navigator.pop(context);}, child: const Text("CANCEL")),
+                ElevatedButton(onPressed: (){
+                  serviceChargeController.clear();
+                  Navigator.pop(context);}, child: const Text("CANCEL")),
                 ElevatedButton(onPressed:(){
                   if(_key.currentState!.validate()){
                     _takeDown(widget.car,int.parse(serviceChargeController.text));
+                    WorKShopModel workshop = WorKShopModel(car: widget.car, dateTime: DateTime.now(), serviceAmount: int.parse(serviceChargeController.text));
+                    _takeWorkshop(workshop);
                     Navigator.pop(context);
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       backgroundColor: Colors.green,

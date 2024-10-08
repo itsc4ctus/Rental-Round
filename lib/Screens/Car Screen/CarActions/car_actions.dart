@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../Models/car_model.dart';
 import '../../../Services/car_services.dart';
 import '../View Car/viewcar_screen.dart';
-import '../editcar_screen.dart';
+import '../Edit Car/editcar_screen.dart';
 
 class CarActions {
   static Future<void> editCar(BuildContext context, Cars editCar, List<Cars> onHoldCars) async {
@@ -38,6 +38,9 @@ class CarActions {
     } else {
       await CarServices().deleteCar(vehicleNo);
       await CarServices().deleteAvailableCar(vehicleNo);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+         backgroundColor: Colors.red,
+          content: Text("Car deleted succesfully!")));
     }
     Navigator.pop(context);
   }

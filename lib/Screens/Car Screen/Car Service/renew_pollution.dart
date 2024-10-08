@@ -26,10 +26,7 @@ class _RenewPollutionState extends State<RenewPollution> {
   Future<void> pickImage()async{
     XFile? pickedimage = await _imagePicker.pickImage(source: ImageSource.gallery);
     image = pickedimage;
-    setState(() {
-
-    });
-
+    setState(() {});
   }
   XFile? image;
   late DateTime pollutionDate;
@@ -48,9 +45,6 @@ class _RenewPollutionState extends State<RenewPollution> {
 
     });
   }
-
-
-
   @override
   void initState() {
     pollutionDate = widget.pollutionDate;
@@ -155,7 +149,6 @@ class _RenewPollutionState extends State<RenewPollution> {
         ),
       ),
     );
-
   }
   void _showDialogue(String messege,String btnName,VoidCallback btnfn,BuildContext context){
     showDialog(context: context,builder: (context) {

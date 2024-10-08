@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:rentel_round/Screens/Budget%20Screen/showCDealsTile.dart';
+import 'package:rentel_round/Screens/Budget%20Screen/Budget%20screen/Deals/showCDealsTile.dart';
 
-import '../../Models/status_model.dart';
-import '../../Services/status_services.dart';
+import '../../../../Models/status_model.dart';
+import '../../../../Services/status_services.dart';
 
 
 class ShowCDeals extends StatefulWidget {

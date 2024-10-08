@@ -38,4 +38,6 @@ class status{
   @HiveField(9)
   int amountReceived;
 
+
+
 }

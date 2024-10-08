@@ -22,7 +22,7 @@ class CarTile extends StatefulWidget {
   final VoidCallback onEdit;
   final VoidCallback viewCar;
   final bool availability;
-  const CarTile({
+  CarTile({
     super.key,
     required this.carName,
     required this.vehicleNo,
@@ -82,7 +82,6 @@ class _CarTileState extends State<CarTile> {
                       ),
                     ),
                     Container(
-
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       height: 140,
                       width: 280,

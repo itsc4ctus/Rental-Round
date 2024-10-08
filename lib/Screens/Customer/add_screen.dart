@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rentel_round/Models/car_model.dart';
+import 'package:rentel_round/Screens/Car%20Screen/View%20Car/viewcar_screen.dart';
 import 'package:rentel_round/Screens/Customer/bottomsheetcar_tile.dart';
 import 'package:rentel_round/Screens/Customer/customerFeilds.dart';
 import 'package:rentel_round/Services/car_services.dart';
@@ -21,11 +22,12 @@ class AddScreen extends StatefulWidget {
 class _AddScreenState extends State<AddScreen> {
   DateTime dateNow = DateTime.now();
   DateTime lastdateTime = DateTime.now();
-
+DateTime? displayDate;
   int? finalAmount;
   List<Cars> listCar = [];
   Cars? selectedCar;
-  int? noOfDays;
+  late int noOfDays;
+  late int noOfHours;
   int? total=0;
   TextEditingController cnameController = TextEditingController();
   TextEditingController cidController = TextEditingController();
@@ -70,7 +72,6 @@ void _clearFeilds(){
       proofImg = null;
       lastdateTime = DateTime.now();
       _key.currentState!.reset();
-
 setState(() {
 
 });
@@ -104,12 +105,17 @@ setState(() {
   Widget build(BuildContext context) {
 
     Duration duration = lastdateTime.difference(dateNow);
-    int noOfDays = duration.inDays+1;
+    noOfDays = duration.inDays+1;
+    noOfHours = duration.inHours;
     return GestureDetector(
       onTap: (){
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
+        appBar: AppBar(
+          title: Text("ADD NEW CUSTOMER"),
+          centerTitle: true,
+        ),
         backgroundColor: Colors.white,
         body: Center(
           child: SingleChildScrollView(
@@ -183,12 +189,12 @@ setState(() {
                     customerFields.fields(
                       (value) {
                         if (cidController.text.isEmpty) {
-                          return "Enter a Customer ID";
+                          return "Enter a Customer Proof ID";
                         }
                         return null;
                       },
-                      "customer ID",
-                      "enter customer ID",
+                      "customer proof ID",
+                      "enter customer proof ID",
                       cidController,
                     ),
                     const SizedBox(height: 10),
@@ -238,37 +244,46 @@ setState(() {
                                 width: 140,
                                 child: const Icon(CupertinoIcons.car_detailed),
                               )
-                            : SizedBox(
-                                height: 200,
-                                width: 200,
-                                child: SingleChildScrollView(
-                                  child: BottomSheetCarTile(
-                                    carName: selectedCar!.carName,
-                                    vehicleNo: selectedCar!.vehicleNo,
-                                    kmDriven: selectedCar!.kmDriven,
-                                    seatCapacity: selectedCar!.seatCapacity,
-                                    cubicCapacity: selectedCar!.cubicCapacity,
-                                    rcNo: selectedCar!.rcNo,
-                                    pollutionDate: selectedCar!.pollutionDate,
-                                    fuelType: selectedCar!.fuelType,
-                                    amtPerDay: selectedCar!.amtPerDay,
-                                    carImage: selectedCar!.carImage,
-                                    brandName: selectedCar!.brandName,
-                                    carType: selectedCar!.carType,
-                                    pcImage: selectedCar!.pcImage,
-                                    rcImage: selectedCar!.rcImage,
+                            : GestureDetector(
+                          onTap: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => ViewcarScreen(car: selectedCar!),));
+                          },
+                              child: SizedBox(
+                                  height: 200,
+                                  width: 200,
+                                  child: SingleChildScrollView(
+                                    child: BottomSheetCarTile(
+                                      carName: selectedCar!.carName,
+                                      vehicleNo: selectedCar!.vehicleNo,
+                                      kmDriven: selectedCar!.kmDriven,
+                                      seatCapacity: selectedCar!.seatCapacity,
+                                      cubicCapacity: selectedCar!.cubicCapacity,
+                                      rcNo: selectedCar!.rcNo,
+                                      pollutionDate: selectedCar!.pollutionDate,
+                                      fuelType: selectedCar!.fuelType,
+                                      amtPerDay: selectedCar!.amtPerDay,
+                                      carImage: selectedCar!.carImage,
+                                      brandName: selectedCar!.brandName,
+                                      carType: selectedCar!.carType,
+                                      pcImage: selectedCar!.pcImage,
+                                      rcImage: selectedCar!.rcImage,
+                                    ),
                                   ),
                                 ),
-                              ),
+                            ),
                       ],
                     ),
                     const SizedBox(height: 10),
                     Row(
                       children: [
                         const Text("Select End Date:"),
-                        CupertinoButton(
+                        SizedBox(width: 10,),
+                        ElevatedButton(
                           child: Text(
-                              "${lastdateTime.day}-${lastdateTime.month}-${lastdateTime.year}"),
+                            displayDate==null?
+                                "SELECT DATE"
+                                :
+                              "${displayDate!.day}-${displayDate!.month}-${displayDate!.year}"),
                           onPressed: () {
                             showCupertinoModalPopup(
                               context: context,
@@ -276,14 +291,14 @@ setState(() {
                                 return SizedBox(
                                   height: 250,
                                   child: CupertinoDatePicker(
-                                    minimumDate: DateTime.now(),
+                                    minimumDate: DateTime.now().add(Duration(days: 1)),
+                                    initialDateTime: DateTime.now().add(Duration(days: 1)),
                                     onDateTimeChanged: (DateTime newDate) {
                                       setState(() {
+                                        displayDate = newDate;
                                         lastdateTime = newDate;
                                         noOfDays = lastdateTime
-                                                .difference(dateNow)
-                                                .inDays +
-                                            1;
+                                                .difference(dateNow).inDays;
                                       });
                                     },
                                     backgroundColor: Colors.white,
@@ -362,11 +377,12 @@ setState(() {
                                     advAmount: int.parse(amountController.text),
                                     extraAmount: int.parse(extraAmtController.text),
                                     proofImage: proofImg!.path,
-                                    totalAmount: total!,
-                                amountReceived: 0
+                                    totalAmount: calculateTotal(noOfDays, amountController, selectedCar!),
+                                amountReceived: 0,
                                 );
                                 _addStatus(newStatus);
                                 _getStatus();
+                                print(dateNow);
                                 moveToOnHold(selectedCar!, selectedCar!.vehicleNo);
                                 Navigator.pop(context);
                                 widget.goToStatus(1);
@@ -480,4 +496,5 @@ setState(() {
       );
     });
   }
+
 }

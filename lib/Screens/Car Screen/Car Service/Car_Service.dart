@@ -51,7 +51,7 @@ class _CarServiceScreenState extends State<CarServiceScreen> {
 
   int _selectedIndex =0;
 Future<void> service(Cars car)async{
-
+  await CarServices().updateCar(car.vehicleNo, car);
   await CarServices().addServiceCars(car);
   await CarServices().addOnHoldCar(car);
   await CarServices().deleteAvailableCar(car.vehicleNo);
@@ -60,9 +60,6 @@ Future<void> service(Cars car)async{
 
   });
 }
-
-
-
   @override
   Widget build(BuildContext context) {
     switch(_selectedIndex){

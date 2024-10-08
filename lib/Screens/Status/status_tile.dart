@@ -42,8 +42,18 @@ class StatusTile extends StatefulWidget {
 }
 
 class _StatusTileState extends State<StatusTile> {
-  bool isCompleted = false;
 
+
+
+  bool isCompleted = false;
+  Future<void> calculateNoOfDays()async{
+    int noDay=await widget.Status.endDate.difference(widget.Status.startDate).inDays;
+
+    print("calculated");
+    setState(() {
+
+    });
+  }
   Future<void> CarToAvailable() async {
     await CarServices().addAvailableCar(widget.selectedCar);
     await CarServices().deleteOnHoldCar(widget.selectedCar.vehicleNo);
@@ -56,7 +66,12 @@ class _StatusTileState extends State<StatusTile> {
   String monthToWords(int monthNumber) {
     return month[monthNumber - 1];
   }
+@override
+  void initState() {
 
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -140,6 +155,7 @@ class _StatusTileState extends State<StatusTile> {
                       ? null
                       : () async {
                     final result = await showDialog(
+
                       context: context,
                       builder: (context) => ShowDeal(
                         carAmount: widget.selectedCar.amtPerDay,

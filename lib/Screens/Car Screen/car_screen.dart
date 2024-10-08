@@ -6,6 +6,7 @@ import 'package:rentel_round/Screens/Car%20Screen/car_tile.dart';
 
 import '../../Models/car_model.dart';
 import '../../Services/car_services.dart';
+import 'Car Service/Car_Service.dart';
 import 'CarActions/car_actions.dart';
 
 class CarScreen extends StatefulWidget {
@@ -65,6 +66,15 @@ class _CarScreenState extends State<CarScreen> {
     }
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text("RENTEL ROUND"),
+        centerTitle: true,
+        actions:[
+          IconButton(onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const CarServiceScreen(),));
+          }, icon: const Icon(Icons.car_repair))
+        ] ,
+      ),
       backgroundColor: Colors.blue.shade50,
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.black,
@@ -146,7 +156,7 @@ class _CarScreenState extends State<CarScreen> {
                 onDelete: () => CarActions.deleteCar(context, displayedCars[index].vehicleNo, onHoldCars),
                 onEdit: () => CarActions.editCar(context, displayedCars[index], onHoldCars),
                 viewCar: () => CarActions.viewCar(context, displayedCars[index]),
-                availability: displayedCars == onHoldCars ? false : displayedCars[index].availability,
+                availability: displayedCars == onHoldCars ? false: displayedCars[index].availability,
               ),
             ),
           ),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rentel_round/Models/car_model.dart';
 import 'package:rentel_round/Models/status_model.dart';
+import 'package:rentel_round/Screens/Car%20Screen/View%20Car/viewcar_screen.dart';
 import 'package:rentel_round/Screens/Customer/bottomsheetcar_tile.dart';
 import 'package:rentel_round/Screens/Customer/customerFeilds.dart';
 import 'package:rentel_round/Services/car_services.dart';
@@ -22,9 +23,9 @@ class _EditScreenCustomerState extends State<EditScreenCustomer> {
 
   late DateTime dateNow;
   late DateTime lastdateTime;
+  DateTime? displayDate;
   int? finalAmount;
   List<Cars> listCar = [];
-  int? noOfDays;
   int? total=0;
   TextEditingController cnameController = TextEditingController();
   TextEditingController cidController = TextEditingController();
@@ -53,6 +54,7 @@ class _EditScreenCustomerState extends State<EditScreenCustomer> {
     lastdateTime = DateTime(widget.customer.endDate.year, widget.customer.endDate.month, widget.customer.endDate.day);
       carSelected = widget.customer.selectedCar;
       proofImg = XFile(widget.customer.proofImage);
+      total = widget.customer.totalAmount;
   }
 
   void _loadCars() async {
@@ -85,10 +87,14 @@ class _EditScreenCustomerState extends State<EditScreenCustomer> {
       proofImg = pickedImage;
     });
   }
+
   @override
   Widget build(BuildContext context) {
-    Duration duration = lastdateTime.difference(dateNow);
-    int noOfDays = duration.inDays + 1; // Calculate number of days
+
+    int noOfDays = lastdateTime.difference(dateNow).inDays;
+
+    int hours = (lastdateTime.difference(dateNow).inHours);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.customer.cName),
@@ -128,6 +134,8 @@ class _EditScreenCustomerState extends State<EditScreenCustomer> {
                         children: [
                           ElevatedButton(
                             onPressed: () {
+                              print(hours);
+                              print(dateNow);
                               _pickImage();
                             },
                             child: const Text(
@@ -204,21 +212,26 @@ class _EditScreenCustomerState extends State<EditScreenCustomer> {
                          height: 200,
                          width: 200,
                          child: SingleChildScrollView(
-                           child: BottomSheetCarTile(
-                             carName: carSelected.carName,
-                             vehicleNo: carSelected.vehicleNo,
-                             kmDriven: carSelected.kmDriven,
-                             seatCapacity: carSelected.seatCapacity,
-                             cubicCapacity: carSelected.cubicCapacity,
-                             rcNo: carSelected.rcNo,
-                             pollutionDate: carSelected.pollutionDate,
-                             fuelType: carSelected.fuelType,
-                             amtPerDay: carSelected.amtPerDay,
-                             carImage:carSelected.carImage,
-                             brandName: carSelected.brandName,
-                             carType: carSelected.carType,
-                             pcImage: carSelected.pcImage,
-                             rcImage: carSelected.rcImage,
+                           child: InkWell(
+                             onTap: (){
+                               Navigator.push(context, MaterialPageRoute(builder: (context) => ViewcarScreen(car: carSelected),));
+                             },
+                             child: BottomSheetCarTile(
+                               carName: carSelected.carName,
+                               vehicleNo: carSelected.vehicleNo,
+                               kmDriven: carSelected.kmDriven,
+                               seatCapacity: carSelected.seatCapacity,
+                               cubicCapacity: carSelected.cubicCapacity,
+                               rcNo: carSelected.rcNo,
+                               pollutionDate: carSelected.pollutionDate,
+                               fuelType: carSelected.fuelType,
+                               amtPerDay: carSelected.amtPerDay,
+                               carImage:carSelected.carImage,
+                               brandName: carSelected.brandName,
+                               carType: carSelected.carType,
+                               pcImage: carSelected.pcImage,
+                               rcImage: carSelected.rcImage,
+                             ),
                            ),
                          ),
                        ),
@@ -226,9 +239,12 @@ class _EditScreenCustomerState extends State<EditScreenCustomer> {
                   Row(
                     children: [
                       const Text("Click to Extend End Date:"),
-                      CupertinoButton(
-                        child: Text(
-                            "${lastdateTime.day}-${lastdateTime.month}-${lastdateTime.year}"),
+                      SizedBox(width: 10,),
+                      ElevatedButton(
+                        child: Text(displayDate==null?
+                        "SELECT DATE"
+                            :
+                            "${displayDate!.day}-${displayDate!.month}-${displayDate!.year}"),
                         onPressed: () {
                           showCupertinoModalPopup(
                             context: context,
@@ -236,16 +252,14 @@ class _EditScreenCustomerState extends State<EditScreenCustomer> {
                               return SizedBox(
                                 height: 250,
                                 child: CupertinoDatePicker(
-                                  minimumYear: widget.customer.startDate.year,
-                                  minimumDate:dateNow,
+                                  minimumDate:dateNow.add(Duration(days: 1)),
                                   initialDateTime: lastdateTime,
                                   onDateTimeChanged: (DateTime newDate) {
                                     setState(() {
                                       lastdateTime = newDate;
                                       noOfDays = lastdateTime
                                               .difference(dateNow)
-                                              .inDays +
-                                          1;
+                                              .inDays;
                                     });
                                   },
                                   backgroundColor: Colors.white,
@@ -331,7 +345,8 @@ class _EditScreenCustomerState extends State<EditScreenCustomer> {
         extraAmount: int.parse(extraAmtController.text),
         proofImage: proofImg!.path,
         totalAmount: total!,
-    amountReceived: 0
+    amountReceived: 0,
+
     );
     _editStatus(cidController.text,newStatus);
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -350,7 +365,7 @@ Future<void> navigateToStatus()async{
 
     int advanceAmount = int.parse(amountController.text);
     int amtPerDay = selectedCar.amtPerDay;
-    int total = (advanceAmount + amtPerDay) * noOfDays;
+    int total = (noOfDays * amtPerDay) + advanceAmount;
 
     return total;
   }

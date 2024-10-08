@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rentel_round/Models/car_model.dart';
 import 'package:rentel_round/Models/status_model.dart';
+import 'package:rentel_round/Screens/Car%20Screen/View%20Car/viewcar_screen.dart';
 import 'package:rentel_round/Screens/Customer/bottomsheetcar_tile.dart';
+import 'package:rentel_round/Screens/Status/viewImage.dart';
 import 'package:rentel_round/Services/car_services.dart';
 
 class CompletedCustomer extends StatefulWidget {
@@ -75,9 +77,14 @@ class _CompletedCustomerState extends State<CompletedCustomer> {
                   height: 150,
                   width: 200,
 
-                  child: Image(image:proofImg != null
-                      ? FileImage(File(proofImg!.path))
-                      : FileImage(File(widget.customer.proofImage)),),
+                  child: InkWell(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ViewImage(image: proofImg!.path),));
+                    },
+                    child: Image(image:proofImg != null
+                        ? FileImage(File(proofImg!.path))
+                        : FileImage(File(widget.customer.proofImage)),),
+                  ),
                 ),
               ),
 
@@ -88,28 +95,33 @@ class _CompletedCustomerState extends State<CompletedCustomer> {
                 displayDetail("Name", widget.customer.cName),
                 displayDetail("ID", widget.customer.cId),
                 displayDetail("Advanced Amount", widget.customer.advAmount.toString()),
-                displayDetail("Extra Amount", widget.customer.extraAmount.toString()),
+                displayDetail("Extra Amount/KM", widget.customer.extraAmount.toString()),
               ]),
 
               const SizedBox(height: 20),
 
 
               _buildDetailCard("Car Used", [
-                BottomSheetCarTile(
-                  carName: carSelected.carName,
-                  vehicleNo: carSelected.vehicleNo,
-                  kmDriven: carSelected.kmDriven,
-                  seatCapacity: carSelected.seatCapacity,
-                  cubicCapacity: carSelected.cubicCapacity,
-                  rcNo: carSelected.rcNo,
-                  pollutionDate: carSelected.pollutionDate,
-                  fuelType: carSelected.fuelType,
-                  amtPerDay: carSelected.amtPerDay,
-                  carImage: carSelected.carImage,
-                  brandName: carSelected.brandName,
-                  carType: carSelected.carType,
-                  pcImage: carSelected.pcImage,
-                  rcImage: carSelected.rcImage,
+                InkWell(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ViewcarScreen(car: carSelected),));
+                  },
+                  child: BottomSheetCarTile(
+                    carName: carSelected.carName,
+                    vehicleNo: carSelected.vehicleNo,
+                    kmDriven: carSelected.kmDriven,
+                    seatCapacity: carSelected.seatCapacity,
+                    cubicCapacity: carSelected.cubicCapacity,
+                    rcNo: carSelected.rcNo,
+                    pollutionDate: carSelected.pollutionDate,
+                    fuelType: carSelected.fuelType,
+                    amtPerDay: carSelected.amtPerDay,
+                    carImage: carSelected.carImage,
+                    brandName: carSelected.brandName,
+                    carType: carSelected.carType,
+                    pcImage: carSelected.pcImage,
+                    rcImage: carSelected.rcImage,
+                  ),
                 ),
               ]),
 
@@ -117,7 +129,8 @@ class _CompletedCustomerState extends State<CompletedCustomer> {
 
 
               _buildDetailCard("Rental Period", [
-                displayDetail("Start Date", "${widget.customer.startDate.day}-${monthToWords(widget.customer.startDate.month)}-${widget.customer.startDate.year}"),
+                displayDetail("Start Date", "${widget.customer.startDate.day}-${monthToWords(widget.customer.startDate.month)}-${widget.customer.startDate.year}",
+                ),
                 displayDetail("Returned Date", "${lastdateTime.day}-${monthToWords(widget.customer.endDate.month)}-${lastdateTime.year}"),
               ]),
 
@@ -141,8 +154,14 @@ class _CompletedCustomerState extends State<CompletedCustomer> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(fieldName, style: const TextStyle(fontWeight: FontWeight.w600)),
-        Text(value, style: const TextStyle(color: Colors.black54)),
+        Text(fieldName, style: const TextStyle(fontWeight: FontWeight.w600,
+
+        )),
+        Text(value, style: const TextStyle(color: Colors.black54,
+
+        ),
+
+        ),
       ],
     );
   }

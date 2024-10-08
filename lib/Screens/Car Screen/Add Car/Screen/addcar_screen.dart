@@ -8,6 +8,8 @@ import 'package:rentel_round/Models/car_model.dart';
 import 'package:rentel_round/Screens/Car%20Screen/Add%20Car/Feilds/addCarFeilds.dart';
 import 'package:rentel_round/Services/car_services.dart';
 
+import '../Feilds/carImageWIdget.dart';
+
 class AddcarScreen extends StatefulWidget {
   const AddcarScreen({super.key});
 
@@ -50,7 +52,54 @@ class _AddcarScreenState extends State<AddcarScreen> {
       pcImage = pickImage;
     });
   }
-
+  Future<void> addCar() async {
+    Cars newCar = Cars(
+      carName: carnameController.text,
+      vehicleNo: vehiclenoController.text,
+      kmDriven: int.parse(kmdrivenController.text),
+      seatCapacity: int.parse(seatCapacityController.text),
+      cubicCapacity: int.parse(ccController.text),
+      rcNo: int.parse(rcnoController.text),
+      pollutionDate: dateNow,
+      fuelType: fuelDownValue,
+      amtPerDay: int.parse(amountController.text),
+      carImage: carImage!.path,
+      rcImage: rcImage!.path,
+      pcImage: pcImage!.path,
+      brandName: brandController.text,
+      carType: dropDownValue,
+    );
+    await CarServices().addCar(
+      newCar,
+    );
+    await CarServices().addAvailableCar(newCar);
+    await CarServices().getCar();
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        backgroundColor: Colors.green,
+        content: Text(
+          "New Car Added!",
+          style: TextStyle(color: Colors.white),
+        )));
+    Navigator.popUntil(context, (route) => route.isFirst);
+  }
+  void _showDialogue(String messege, String btnName, VoidCallback btnfn,
+      BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(messege),
+            actions: [
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text("CANCEL")),
+              ElevatedButton(onPressed: btnfn, child: Text(btnName))
+            ],
+          );
+        });
+  }
   String dropDownValue = "M";
   String fuelDownValue = "PETROL";
   DateTime dateNow = DateTime.now();
@@ -94,26 +143,7 @@ class _AddcarScreenState extends State<AddcarScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: carImage == null
-                                ? Container(
-                                    height: 130,
-                                    width: 180,
-                                    color: Colors.grey.shade500,
-                                    child: Center(
-                                        child: Icon(
-                                      Icons.image,
-                                      size: 50,
-                                      color: Colors.grey.shade600,
-                                    )),
-                                  )
-                                : Image(
-                                    image: FileImage(File(carImage!.path)),
-                                    height: 130,
-                                    width: 180,
-                                    fit: BoxFit.cover,
-                                  )),
+                        carImageWidget(carImage: carImage),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -140,10 +170,7 @@ class _AddcarScreenState extends State<AddcarScreen> {
                       ],
                     ),
                     const SizedBox(
-                      height: 10,
-                    ),
-                    const SizedBox(
-                      height: 10,
+                      height: 20,
                     ),
                     AddCarFeilds().addCarFeilds("please fill valid feild",
                         "car name", "enter your car name", carnameController),
@@ -327,7 +354,8 @@ class _AddcarScreenState extends State<AddcarScreen> {
                               "seat capacity",
                               seatCapacityController,
                               TextInputType.number,
-                              [FilteringTextInputFormatter.digitsOnly]),
+                              [FilteringTextInputFormatter.digitsOnly],
+                          ),
 
                         ),
                         SizedBox(
@@ -394,9 +422,16 @@ class _AddcarScreenState extends State<AddcarScreen> {
                                         content: Text("Upload a PC image")));
                                 return;
                               }
+                              int seatCp = int.parse(seatCapacityController.text);
+                              if (seatCp > 6) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text("Enter seat below 6!")));
+                                return;
+                              }
 
                               _showDialogue("Click ok to Add new car", "Add",
-                                  _addCar, context);
+                                  addCar, context);
                             }
                           },
                           child: const Text(
@@ -414,53 +449,5 @@ class _AddcarScreenState extends State<AddcarScreen> {
         ),
       ),
     );
-  }
-  Future<void> _addCar() async {
-    Cars newCar = Cars(
-      carName: carnameController.text,
-      vehicleNo: vehiclenoController.text,
-      kmDriven: int.parse(kmdrivenController.text),
-      seatCapacity: int.parse(seatCapacityController.text),
-      cubicCapacity: int.parse(ccController.text),
-      rcNo: int.parse(rcnoController.text),
-      pollutionDate: dateNow,
-      fuelType: fuelDownValue,
-      amtPerDay: int.parse(amountController.text),
-      carImage: carImage!.path,
-      rcImage: rcImage!.path,
-      pcImage: pcImage!.path,
-      brandName: brandController.text,
-      carType: dropDownValue,
-    );
-    await CarServices().addCar(
-      newCar,
-    );
-    await CarServices().addAvailableCar(newCar);
-    await CarServices().getCar();
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        backgroundColor: Colors.green,
-        content: Text(
-          "New Car Added!",
-          style: TextStyle(color: Colors.white),
-        )));
-    Navigator.popUntil(context, (route) => route.isFirst);
-  }
-  void _showDialogue(String messege, String btnName, VoidCallback btnfn,
-      BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(messege),
-            actions: [
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text("CANCEL")),
-              ElevatedButton(onPressed: btnfn, child: Text(btnName))
-            ],
-          );
-        });
   }
 }

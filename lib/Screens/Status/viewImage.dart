@@ -9,12 +9,21 @@ class ViewImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        height: 200,
-        width: 200,
-        child: Image(image: FileImage(File(image))),
+    return Scaffold(
+      appBar: AppBar(
+
+      ),
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Container(
+
+          height: 350,
+          width: 350,
+          child: Image(image: FileImage(File(image))),
+        ),
       ),
     );
+
+
   }
 }

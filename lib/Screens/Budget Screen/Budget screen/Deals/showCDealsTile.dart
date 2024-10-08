@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:rentel_round/Screens/Status/viewCompletedStatus.dart';
 
-import '../../Models/car_model.dart';
-import '../../Models/status_model.dart';
+import '../../../../Models/car_model.dart';
+import '../../../../Models/status_model.dart';
 
 class ShowCDealsTile extends StatefulWidget {
   final String cName;
@@ -20,7 +20,7 @@ class ShowCDealsTile extends StatefulWidget {
   final status completedCustomer;
   final int amountRecieved;
 
-  const ShowCDealsTile({
+  ShowCDealsTile({
     required this.cName,
     required this.cId,
     required this.startDate,
