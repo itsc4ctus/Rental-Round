@@ -11,6 +11,19 @@ class budgetCard{
       ],
     );
   }
+ static Widget buildStatCardforProfit(String title, int value) {
+   return Row(
+     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+     children: [
+       SizedBox(height: 25, width: 150, child: Text(title)),
+       SizedBox(height: 25, width: 100, child: Text(": $value",
+       style: TextStyle(
+         color: value == 0 ? Colors.black : (value >0? Colors.green : Colors.red),
+       ),
+       )),
+     ],
+   );
+ }
 
  static Widget buildInfoCard({required String title, required String subtitle, required Widget child}) {
     return Card(

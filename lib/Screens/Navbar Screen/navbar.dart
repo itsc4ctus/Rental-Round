@@ -11,7 +11,7 @@ import '../Home Screen/home_page.dart';
 
 class NavBar extends StatefulWidget {
   final int index;
-  final Auth auth;
+final Auth auth;
     NavBar({required this.auth,super.key,this.index=0});
 
   @override
@@ -30,7 +30,7 @@ late int _selectedIndex;
     screens.add(const StatusScreen());
     screens.add(AddScreen(goToStatus: _goToStatus,));
     screens.add(const CarScreen());
-    screens.add(const BudgetScreen());
+    screens.add(BudgetScreen(auth: widget.auth,));
   }
   void _goToStatus(int index) {
     setState(() {
@@ -40,48 +40,49 @@ late int _selectedIndex;
 
   @override
   Widget build(BuildContext context) {
-
-
-
-    return Scaffold(
-      bottomNavigationBar: GNav(
-        selectedIndex: _selectedIndex,
-        onTabChange: (index){
-setState(() {
-  _selectedIndex = index;
-});
-        },
-        tabs:const [
-        GButton(icon: Icons.home_filled,text: "Home",),
-        GButton(icon: CupertinoIcons.flag_fill,text: "Status",),
-        GButton(icon: CupertinoIcons.add_circled),
-        GButton(icon: CupertinoIcons.car_detailed,text: "Cars",),
-        GButton(icon: Icons.currency_exchange,text: "Budget",)
-      ],
-      gap: 8,
-       padding: const EdgeInsets.symmetric(vertical: 16,horizontal: 10),
-        backgroundColor:  Colors.blue.shade900,
-        tabBackgroundColor: Colors.white10,
-        color: Colors.white,
-        activeColor: Colors.white,
-        rippleColor: Colors.white60,
+    return WillPopScope(
+      onWillPop: ()async {
+        final shouldExit = await showDialog<bool>(context: context, builder:(context){
+          return AlertDialog(
+            title: Text("Confirm exit?"),
+            actions: [
+              ElevatedButton(onPressed: (){
+                Navigator.of(context).pop(false);
+              }, child: Text("CANCEL")),
+            ElevatedButton(onPressed: (){
+              Navigator.of(context).pop(true);
+            }, child: Text("OK"))
+            ],
+          );
+        } );
+        return shouldExit ?? false;
+      },
+      child: Scaffold(
+        bottomNavigationBar: GNav(
+          selectedIndex: _selectedIndex,
+          onTabChange: (index){
+      setState(() {
+        _selectedIndex = index;
+      });
+          },
+          tabs:const [
+          GButton(icon: Icons.home_filled,text: "Home",),
+          GButton(icon: CupertinoIcons.flag_fill,text: "Status",),
+          GButton(icon: CupertinoIcons.add_circled),
+          GButton(icon: CupertinoIcons.car_detailed,text: "Cars",),
+          GButton(icon: Icons.currency_exchange,text: "Budget",)
+        ],
+        gap: 8,
+         padding: const EdgeInsets.symmetric(vertical: 16,horizontal: 10),
+          backgroundColor:  Colors.blue.shade900,
+          tabBackgroundColor: Colors.white10,
+          color: Colors.white,
+          activeColor: Colors.white,
+          rippleColor: Colors.white60,
+        ),
+      body: screens[_selectedIndex],
       ),
-body: screens[_selectedIndex],
     );
   }
-  void _showDialogue(String messege,String btnName,VoidCallback btnfn,BuildContext context){
-    showDialog(context: context,builder: (context) {
-      return AlertDialog(
-        title: Text(messege),
-        actions: [
-          ElevatedButton(onPressed: (){
-            Navigator.pop(context);
-          }, child: const Text("CANCEL")),
-          ElevatedButton(onPressed: btnfn, child: Text(btnName))
-        ],
-      );
 
-    });
-
-  }
 }

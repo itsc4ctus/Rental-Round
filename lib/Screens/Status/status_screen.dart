@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rentel_round/Animation/show_animation.dart';
 import 'package:rentel_round/Screens/Customer/completed_deals.dart';
 import 'package:rentel_round/Screens/Status/edit_customer.dart';
 import 'package:rentel_round/Screens/Status/status_tile.dart';
@@ -39,6 +40,7 @@ class _StatusScreenState extends State<StatusScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
         title: Text("RENTEL ROUND"),
         centerTitle: true,

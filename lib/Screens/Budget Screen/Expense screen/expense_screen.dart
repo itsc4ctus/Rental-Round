@@ -15,7 +15,8 @@ import 'package:rentel_round/Services/workshop_services.dart';
 import '../../../Models/car_model.dart';
 
 class ExpenseScreen extends StatefulWidget {
-  const ExpenseScreen({super.key});
+  final Auth auth;
+  const ExpenseScreen({required this.auth, super.key});
 
   @override
   State<ExpenseScreen> createState() => _ExpenseScreenState();
@@ -24,7 +25,6 @@ class ExpenseScreen extends StatefulWidget {
 class _ExpenseScreenState extends State<ExpenseScreen> {
   @override
   void initState() {
-    getAuth();
     getServicedCar();
     getOtherExp();
     getList();
@@ -32,15 +32,11 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
     // TODO: implement initState
     super.initState();
   }
-List<WorKShopModel> workshopList=[];
+
+  List<WorKShopModel> workshopList = [];
   List<Cars> servicedCars = [];
   List<expenses> otherExpList = [];
   late Auth auth;
-  Future<void> getAuth() async {
-    final lastAuth = await AuthServices().getLastUser();
-    auth = lastAuth!;
-  }
-
   Future<void> getServicedCar() async {
     List<Cars> cars = await CarServices().getExpSerCar();
     setState(() {
@@ -52,13 +48,11 @@ List<WorKShopModel> workshopList=[];
     otherExpList = await ExpenceServices().getExpenses();
     setState(() {});
   }
-Future<void> getList() async{
+
+  Future<void> getList() async {
     workshopList = await WorkshopServices().getWorkshopList();
-    setState(() {
-
-    });
-}
-
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +67,7 @@ Future<void> getList() async{
                   context,
                   MaterialPageRoute(
                     builder: (context) => NavBar(
-                      auth: auth,
+                      auth: widget.auth,
                       index: 4,
                     ),
                   ),
@@ -112,7 +106,7 @@ Future<void> getList() async{
                           child: ListView.builder(
                             itemCount: workshopList.length,
                             itemBuilder: (context, index) => WorkShoptile(
-                              workshop:  workshopList[index],
+                              workshop: workshopList[index],
                             ),
                           ),
                         ),
@@ -193,7 +187,9 @@ Future<void> getList() async{
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const OtherExpScreen(),
+                          builder: (context) => OtherExpScreen(
+                            auth: widget.auth,
+                          ),
                         ));
                   },
                   child: const Text("ADD OTHER EXPENSES")),

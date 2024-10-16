@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:rentel_round/Authentication/Screens/new_to_app.dart';
 import 'package:rentel_round/Screens/Home%20Screen/Widgets/filterItems.dart';
 import 'package:rentel_round/Services/car_services.dart';
 import '../../Authentication/Screens/login_page.dart';
@@ -15,7 +16,7 @@ import '../Drawer Screens/privacy_policy.dart';
 import '../Drawer Screens/profile_screen.dart';
 
 class HomePage extends StatefulWidget {
-  late Auth auth;
+    final Auth auth;
    HomePage({required this.auth,super.key});
 
   @override
@@ -403,7 +404,7 @@ bool matchAvailability = !avCar ||(avCar && car.availability == true);
 
   @override
   Widget build(BuildContext context) {
-    final AuthServices authServices = AuthServices();
+    // final AuthServices authServices = AuthServices();
     return GestureDetector(
       onTap: (){
         FocusScope.of(context).unfocus();
@@ -434,14 +435,12 @@ bool matchAvailability = !avCar ||(avCar && car.availability == true);
                       color: Colors.black
                   ),),
 
-
-
                 Container(
                   child: Column(
                     children: [
                       ListTile(
                         onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfileScreen(auth: widget.auth)));
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfileScreen(auth: widget.auth,)));
                         },
                         leading: const Icon(CupertinoIcons.profile_circled),
                         title: const Text("View Profile"),
@@ -477,20 +476,8 @@ bool matchAvailability = !avCar ||(avCar && car.availability == true);
 
                 ),
                 const SizedBox(
-                  height: 250,
+                  height: 300,
                 ),
-                Container(
-                    padding: const EdgeInsets.symmetric(vertical: 0,horizontal: 50),
-                    width:double.infinity,
-                    child: ElevatedButton(onPressed: ()async{
-                      _showDialogue("Do you want to Logout?", "Logout", (){ Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginPage(),));}, context);
-                      await authServices.setLoginStatus(false);
-                      await CarServices().cloaseBox();
-                    }, child: const Text("Log Out",
-                      style: TextStyle(
-                          color: Colors.white
-                      ),
-                    ))),
                 const SizedBox(
 
                   width: 50,
@@ -572,19 +559,5 @@ bool matchAvailability = !avCar ||(avCar && car.availability == true);
       ),
     );
   }
-  void _showDialogue(String messege,String btnName,VoidCallback btnfn,BuildContext context){
-    showDialog(context: context,builder: (context) {
-      return AlertDialog(
-        title: Text(messege),
-        actions: [
-          ElevatedButton(onPressed: (){
-            Navigator.pop(context);
-          }, child: const Text("CANCEL")),
-          ElevatedButton(onPressed: btnfn, child: Text(btnName))
-        ],
-      );
 
-    });
-
-  }
 }

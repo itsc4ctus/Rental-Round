@@ -1,6 +1,9 @@
 import 'dart:io';
 
+import 'dart:typed_data';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -28,29 +31,59 @@ class _AddcarScreenState extends State<AddcarScreen> {
   TextEditingController amountController = TextEditingController();
   TextEditingController seatCapacityController = TextEditingController();
   XFile? carImage;
+  Uint8List? webcarImage;
   XFile? rcImage;
+  Uint8List? webrcImage;
   XFile? pcImage;
+  Uint8List? webpcImage;
 
   final ImagePicker _picker = ImagePicker();
   Future<void> pickCarImage() async {
-    XFile? pickImage = await _picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      carImage = pickImage;
-    });
+    if(kIsWeb){
+      FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.image);
+      if(result !=null && result.files.first.bytes != null){
+        setState(() {
+          webcarImage = result.files.first.bytes;
+        });
+      }
+    }else {
+      XFile? pickImage = await _picker.pickImage(source: ImageSource.gallery);
+      setState(() {
+        carImage = pickImage;
+      });
+    }
   }
 
   Future<void> pickRcImage() async {
-    XFile? pickImage = await _picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      rcImage = pickImage;
-    });
+    if(kIsWeb){
+      FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.image);
+      if(result !=null && result.files.first.bytes !=null){
+        setState(() {
+          webrcImage = result.files.first.bytes;
+        });
+      }
+    }else {
+      XFile? pickImage = await _picker.pickImage(source: ImageSource.gallery);
+      setState(() {
+        rcImage = pickImage;
+      });
+    }
   }
 
   Future<void> pickPcImage() async {
-    XFile? pickImage = await _picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      pcImage = pickImage;
-    });
+    if(kIsWeb){
+      FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.image);
+      if(result != null && result.files.first.bytes != null){
+        setState(() {
+          webpcImage = result.files.first.bytes;
+        });
+      }
+    }else {
+      XFile? pickImage = await _picker.pickImage(source: ImageSource.gallery);
+      setState(() {
+        pcImage = pickImage;
+      });
+    }
   }
   Future<void> addCar() async {
     Cars newCar = Cars(
@@ -106,6 +139,9 @@ class _AddcarScreenState extends State<AddcarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
+    double screenHeight = screenSize.height;
+    double screenWidth = screenSize.width;
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -143,6 +179,7 @@ class _AddcarScreenState extends State<AddcarScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
+                        kIsWeb&& webcarImage !=null ?WebcarImageWidget(carImage: webcarImage) :
                         carImageWidget(carImage: carImage),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -191,7 +228,7 @@ class _AddcarScreenState extends State<AddcarScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SizedBox(
-                          width: 200,
+                          width: screenWidth * 0.465,
                           child: AddCarFeilds().addCarFeilds(
                               "please fill valid feild",
                               "RC no",
@@ -210,7 +247,9 @@ class _AddcarScreenState extends State<AddcarScreen> {
                                 color: Colors.white, fontFamily: "jaro"),
                           ),
                         ),
-                        Checkbox(
+                        kIsWeb ?Checkbox(
+                            value: webrcImage == null ? false : true,
+                            onChanged: (value) {}) :Checkbox(
                             value: rcImage == null ? false : true,
                             onChanged: (value) {})
                       ],
@@ -231,7 +270,7 @@ class _AddcarScreenState extends State<AddcarScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                            width: 200,
+                            width: screenWidth*0.46,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(color: Colors.black45)),
@@ -275,7 +314,9 @@ class _AddcarScreenState extends State<AddcarScreen> {
                                 color: Colors.white, fontFamily: "jaro"),
                           ),
                         ),
-                        Checkbox(
+                        kIsWeb ?Checkbox(
+                            value: webpcImage == null ? false : true,
+                            onChanged: (value) {}) :Checkbox(
                             value: pcImage == null ? false : true,
                             onChanged: (value) {})
                       ],
@@ -287,7 +328,7 @@ class _AddcarScreenState extends State<AddcarScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SizedBox(
-                          width: 110,
+                          width: screenWidth*0.27,
                           child: AddCarFeilds().addCarFeildsTwo(
                               "please fill valid feild",
                               "CC",
@@ -296,7 +337,7 @@ class _AddcarScreenState extends State<AddcarScreen> {
                               [FilteringTextInputFormatter.digitsOnly]),
                         ),
                         SizedBox(
-                          width: 110,
+                          width: screenWidth*0.27,
                           child:
                           AddCarFeilds().addCarFeildsTwo(
                               "please fill valid feild",
@@ -336,7 +377,7 @@ class _AddcarScreenState extends State<AddcarScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SizedBox(
-                          width: 110,
+                          width: screenWidth*0.27,
                           child:
                           AddCarFeilds().addCarFeildsTwo(
                               "please fill valid feild",
@@ -347,7 +388,7 @@ class _AddcarScreenState extends State<AddcarScreen> {
 
                         ),
                         SizedBox(
-                          width: 110,
+                          width: screenWidth*0.27,
                           child:
                           AddCarFeilds().addCarFeildsTwo(
                               "please fill valid feild",
@@ -403,6 +444,7 @@ class _AddcarScreenState extends State<AddcarScreen> {
                         ),
                         ElevatedButton(
                           onPressed: () {
+
                             if (_key.currentState!.validate()) {
                               if (carImage == null) {
                                 ScaffoldMessenger.of(context).showSnackBar(

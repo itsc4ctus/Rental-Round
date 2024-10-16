@@ -14,8 +14,11 @@ class InputFeilds extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
+    double screenHeight = screenSize.height;
+    double screenWidth = screenSize.width;
     return SizedBox(
-      width: 110,
+      width: screenWidth*0.27,
       child: TextFormField(
         validator: (value){
           if(value==null || value == ""){

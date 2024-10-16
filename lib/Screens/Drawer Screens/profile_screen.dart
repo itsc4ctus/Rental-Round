@@ -1,12 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:rentel_round/Authentication/Screens/new_to_app.dart';
+import 'package:rentel_round/Screens/Drawer%20Screens/edit_profile.dart';
+import 'package:rentel_round/Services/auth_services.dart';
+import 'package:rentel_round/Services/car_services.dart';
+import 'package:rentel_round/Services/expence_services.dart';
+import 'package:rentel_round/Services/status_services.dart';
+import 'package:rentel_round/Services/workshop_services.dart';
 import 'dart:io';
 import '../../Models/auth_model.dart';
 
 
 class ProfileScreen extends StatefulWidget {
-  final Auth auth;
-  const ProfileScreen({required this.auth, super.key});
+ final Auth auth;
+  ProfileScreen({required this.auth, super.key});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -19,12 +26,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
     // TODO: implement initState
     super.initState();
   }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("SHOP DETAILS"),
+        actions: [
+          IconButton(onPressed: (){
+Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfile(auth: widget.auth,),));
+          }, icon: Icon(Icons.edit_rounded))
+        ],
       ),
       body: Center(
         child: Column(
@@ -35,7 +49,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all()
-              
+
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -60,7 +74,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
             showDetails("OWNER", widget.auth.shopownername),
             showDetails("LOCATION", widget.auth.shoplocation),
             showDetails("SHOP PHONE NUMBER", widget.auth.phonenumer.toString()),
-            showDetails("SHOP E-MAIL", widget.auth.email)
+            showDetails("SHOP E-MAIL", widget.auth.email),
+ElevatedButton(onPressed: ()async{
+  _showDialogue("Are you sure close shop?. It will remove all data!", "OK", ()async{
+    await CarServices().clearBox();
+    await ExpenceServices().clearBox();
+    await StatusServices().clearBox();
+    await WorkshopServices().clearBox();
+    widget.auth.status = false;
+    await AuthServices().updateUser(widget.auth);
+    Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => NewToHome(),));
+  }, context);
+
+}, child: Text("LOGOUT"))
           ],
         ),
       ),
@@ -92,7 +118,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  void _showDialogue(String messege,String btnName,VoidCallback btnfn,BuildContext context){
+    showDialog(context: context,builder: (context) {
+      return AlertDialog(
+        title: Text(messege),
+        actions: [
+          ElevatedButton(onPressed: (){
+            Navigator.pop(context);
+          }, child: const Text("CANCEL")),
+          ElevatedButton(onPressed: btnfn, child: Text(btnName))
+        ],
+      );
 
+    });
+
+  }
 
 
 

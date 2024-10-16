@@ -17,7 +17,7 @@ class _LoginPageState extends State<LoginPage> {
 TextEditingController usernameController = TextEditingController();
 TextEditingController passwordController = TextEditingController();
 final GlobalKey<FormState> _formKey = GlobalKey();
-AuthServices authServices = AuthServices();
+// AuthServices authServices = AuthServices();
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +93,7 @@ AuthServices authServices = AuthServices();
                   ),
                   ElevatedButton(onPressed: () async{
                     if(_formKey.currentState!.validate()){
-                      await _login();
+
                     }
                   else{
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("User not found!")));
@@ -140,25 +140,5 @@ AuthServices authServices = AuthServices();
       ),
     );
   }
-  Future<void> _login() async{
 
-    //getdata
-    List<Auth> users = await authServices.getData();
-
-    bool? loginSuccesfull= false;
-
-    for(var user in users){
-      if(user.username == usernameController.text && user.password == passwordController.text){
-        loginSuccesfull = true;
-        await authServices.setLoginStatus(true);
-        await authServices.writeData(user);
-
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => NavBar(auth: user,),), (route) => false,);
-        break;
-      }
-    }
-    if(loginSuccesfull==false){
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Invalid User Name Or Password!")));
-    }
-  }
 }

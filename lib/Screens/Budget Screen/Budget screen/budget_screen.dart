@@ -8,54 +8,54 @@ import 'package:rentel_round/Services/expence_services.dart';
 import 'package:rentel_round/Services/status_services.dart';
 import 'package:rentel_round/Services/workshop_services.dart';
 
+import '../../../Models/auth_model.dart';
 import '../../../Models/car_model.dart';
 import '../../../Models/expences_model.dart';
 import '../../../Models/status_model.dart';
 import '../../../Models/workshop_model.dart';
 
 class BudgetScreen extends StatefulWidget {
-  const BudgetScreen({super.key});
+  final Auth auth;
+  BudgetScreen({required this.auth, super.key});
 
   @override
   State<BudgetScreen> createState() => _BudgetScreenState();
 }
 
 class _BudgetScreenState extends State<BudgetScreen> {
-  int totalIncome =0;
-  int totalExpense=0;
-  int totalServiceCharges=0;
-  int totalOtherExp=0;
-  int profit=0;
-  List<status> CStatusList =[];
+  int totalIncome = 0;
+  int totalExpense = 0;
+  int totalServiceCharges = 0;
+  int totalOtherExp = 0;
+  int profit = 0;
+  List<status> CStatusList = [];
 
   @override
   void initState() {
     _loadCompletedStatus();
     super.initState();
   }
-  Future<void> _loadCompletedStatus()async{
+
+  Future<void> _loadCompletedStatus() async {
     List<status> list = await StatusServices().getCompletedDealStatus();
     CStatusList = list;
     CStatusList = CStatusList.reversed.toList();
-    for(var Status in  CStatusList){
+    for (var Status in CStatusList) {
       totalIncome = totalIncome + Status.amountReceived;
     }
-    List<WorKShopModel> workshopList = await WorkshopServices().getWorkshopList();
-    for(var work in workshopList){
+    List<WorKShopModel> workshopList =
+        await WorkshopServices().getWorkshopList();
+    for (var work in workshopList) {
       totalServiceCharges = totalServiceCharges + work.serviceAmount;
     }
     List<expenses> expList = await ExpenceServices().getExpenses();
-    for(var expense in expList){
+    for (var expense in expList) {
       totalOtherExp = totalOtherExp + expense.expenceAmt;
     }
     totalExpense = totalServiceCharges + totalOtherExp;
     profit = totalIncome - totalExpense;
-    setState(() {
-
-    });
+    setState(() {});
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -80,10 +80,12 @@ class _BudgetScreenState extends State<BudgetScreen> {
                 subtitle: "",
                 child: Column(
                   children: [
-                    budgetCard.buildStatCard("TOTAL INCOME", totalIncome.toString()),
-                    budgetCard.buildStatCard("TOTAL EXPENSE", totalExpense.toString()),
+                    budgetCard.buildStatCard(
+                        "TOTAL INCOME", totalIncome.toString()),
+                    budgetCard.buildStatCard(
+                        "TOTAL EXPENSE", totalExpense.toString()),
                     const Divider(color: Colors.blue),
-                    budgetCard.buildStatCard("PROFIT", profit.toString()),
+                    budgetCard.buildStatCardforProfit("PROFIT", profit),
                   ],
                 ),
               ),
@@ -99,19 +101,23 @@ class _BudgetScreenState extends State<BudgetScreen> {
                   child: CStatusList.isEmpty
                       ? const Center(child: Text("No Deals to show"))
                       : ListView.builder(
-                    itemCount: CStatusList.length > 7 ? 7 : CStatusList.length,
-                    itemBuilder: (context, index) => LatestDeals(
-                      cName: CStatusList[index].cName,
-                      amountRecieved: CStatusList[index].amountReceived,
-                    ),
-                  ),
+                          itemCount:
+                              CStatusList.length > 7 ? 7 : CStatusList.length,
+                          itemBuilder: (context, index) => LatestDeals(
+                            cName: CStatusList[index].cName,
+                            amountRecieved: CStatusList[index].amountReceived,
+                          ),
+                        ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const ShowCDeals()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ShowCDeals()));
                   },
                   child: const Text("SHOW ALL DEALS"),
                 ),
@@ -122,8 +128,10 @@ class _BudgetScreenState extends State<BudgetScreen> {
                 subtitle: "",
                 child: Column(
                   children: [
-                    budgetCard.buildStatCard("SERVICE CHARGES", totalServiceCharges.toString()),
-                    budgetCard.buildStatCard("OTHER EXPENSES", totalOtherExp.toString()),
+                    budgetCard.buildStatCard(
+                        "SERVICE CHARGES", totalServiceCharges.toString()),
+                    budgetCard.buildStatCard(
+                        "OTHER EXPENSES", totalOtherExp.toString()),
                   ],
                 ),
               ),
@@ -131,11 +139,12 @@ class _BudgetScreenState extends State<BudgetScreen> {
                 padding: const EdgeInsets.all(6.0),
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => ExpenseScreen()),
-                          (route) => route.isFirst,
-                    );
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ExpenseScreen(auth: widget.auth),
+                        ));
                   },
                   child: const Text("EXPENSE"),
                 ),

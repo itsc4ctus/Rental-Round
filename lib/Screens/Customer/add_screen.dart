@@ -14,7 +14,6 @@ import '../../Models/status_model.dart';
 class AddScreen extends StatefulWidget {
   final Function(int) goToStatus;
   const AddScreen({required this.goToStatus, super.key});
-
   @override
   State<AddScreen> createState() => _AddScreenState();
 }
@@ -103,6 +102,9 @@ setState(() {
 
   @override
   Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
+    double screenHeight = screenSize.height;
+    double screenWidth = screenSize.width;
 
     Duration duration = lastdateTime.difference(dateNow);
     noOfDays = duration.inDays+1;
@@ -133,8 +135,8 @@ setState(() {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: Container(
-                            height: 130,
-                            width: 130,
+                            height: screenHeight * 0.15,
+                            width: screenWidth * 0.3,
                             color: Colors.pink.shade50,
                             child: proofImg == null
                                 ? const Center(
@@ -240,8 +242,8 @@ setState(() {
                                   borderRadius: BorderRadius.circular(10),
                                   color: Colors.pink.shade50,
                                 ),
-                                height: 140,
-                                width: 140,
+                                height: screenHeight *0.15,
+                                width: screenWidth*0.3,
                                 child: const Icon(CupertinoIcons.car_detailed),
                               )
                             : GestureDetector(
@@ -319,8 +321,8 @@ setState(() {
                           decoration: BoxDecoration(
                             border: Border.all(),
                           ),
-                          height: 80,
-                          width: 250,
+                          height: screenHeight *0.1,
+                          width: screenWidth*0.6,
                           child: amountController.text.isEmpty ||
                                   selectedCar == null
                               ? const Center(

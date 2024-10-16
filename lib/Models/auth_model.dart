@@ -5,37 +5,32 @@ part 'auth_model.g.dart';
 @HiveType(typeId: 0)
 class Auth {
   Auth({
-    required this.username,
-    required this.password,
     required this.shopname,
     required this.shopownername,
     required this.shoplocation,
     required this.phonenumer,
     required this.email,
     required this.image,
+    required this.status,
+
   });
-
-  @HiveField(0)
-  late String username;
-
   @HiveField(1)
-  late String password;
-
-  @HiveField(2)
   late String shopname;
 
-  @HiveField(3)
+  @HiveField(2)
   late String shopownername;
 
-  @HiveField(4)
+  @HiveField(3)
   late String shoplocation;
 
-  @HiveField(5)
+  @HiveField(4)
   late int phonenumer;
 
-  @HiveField(6)
+  @HiveField(5)
   late String email;
 
-  @HiveField(7)
+  @HiveField(6)
   late String image;
+  @HiveField(7)
+  late bool status;
 }

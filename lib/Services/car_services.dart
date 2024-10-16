@@ -14,31 +14,53 @@ class CarServices{
   Box<Cars>? _onSerCarForExpense;
 
   Future<void> openBox()async{
-   _carBox = await Hive.openBox("carBox");
-   _availableCarBox = await Hive.openBox("availableBox");
-   _onHoldCarBox = await Hive.openBox("onHoldBox");
-   _onServicingCarBox = await Hive.openBox("onServiceBox");
-   _onSerCarForExpense = await Hive.openBox("ExpSerCar");
+    _carBox = await Hive.openBox("carBox");
+    _availableCarBox = await Hive.openBox("availableBox");
+    _onHoldCarBox = await Hive.openBox("onHoldBox");
+    _onServicingCarBox = await Hive.openBox("onServiceBox");
+    _onSerCarForExpense = await Hive.openBox("ExpSerCar");
   }
 
-  Future<void> cloaseBox() async{
+  Future<void> closeBox() async{
     await _carBox!.close();
     await _availableCarBox!.close();
     await _onHoldCarBox!.close();
     await _onServicingCarBox!.close();
     await _onSerCarForExpense!.close();
-}
+  }
 
+  Future<void> clearBox() async{
+    if (_carBox == null) {
+      await openBox();
+    }
+    if (_availableCarBox == null) {
+      await openBox();
+    }
+    if (_onHoldCarBox == null) {
+      await openBox();
+    }
+    if (_onServicingCarBox == null) {
+      await openBox();
+    }
+    if (_onSerCarForExpense == null) {
+      await openBox();
+    }
+    await _carBox!.clear();
+    await _availableCarBox!.clear();
+    await _onHoldCarBox!.clear();
+    await _onServicingCarBox!.clear();
+    await _onSerCarForExpense!.clear();
+  }
 
 
 
   //add car
-Future<void> addCar(Cars car) async{
+  Future<void> addCar(Cars car) async{
     if(_carBox ==null){
       await openBox();
     }
     await _carBox!.add(car);
-}
+  }
   Future<void> addAvailableCar(Cars car) async{
     if(_availableCarBox ==null){
       await openBox();
@@ -69,13 +91,13 @@ Future<void> addCar(Cars car) async{
 
 
 //getCar
-Future<List<Cars>> getCar() async{
-  if(_carBox ==null){
-    await openBox();
-  }
-  return _carBox!.values.toList();
+  Future<List<Cars>> getCar() async{
+    if(_carBox ==null){
+      await openBox();
+    }
+    return _carBox!.values.toList();
 
-}
+  }
 
   Future<List<Cars>> getAvailableCar() async{
     if(_availableCarBox ==null){
@@ -98,12 +120,12 @@ Future<List<Cars>> getCar() async{
     return _onServicingCarBox!.values.toList();
   }
 
-Future<List<Cars>> getExpSerCar() async{
+  Future<List<Cars>> getExpSerCar() async{
     if(_onSerCarForExpense == null){
       await openBox();
     }
     return _onSerCarForExpense!.values.toList();
-}
+  }
 
 
 
@@ -111,20 +133,20 @@ Future<List<Cars>> getExpSerCar() async{
 
 
 //deletecar
-Future<void> deleteCar(String vehicleNo) async{
-  if(_carBox ==null){
-    await openBox();
-  }
+  Future<void> deleteCar(String vehicleNo) async{
+    if(_carBox ==null){
+      await openBox();
+    }
 
-  for(var key in _carBox!.keys){
-    final car = _carBox!.get(key) as Cars;
-    if(car.vehicleNo == vehicleNo){
-      await _carBox!.delete(key);
-      await _availableCarBox!.delete(key);
-      break;
+    for(var key in _carBox!.keys){
+      final car = _carBox!.get(key) as Cars;
+      if(car.vehicleNo == vehicleNo){
+        await _carBox!.delete(key);
+        await _availableCarBox!.delete(key);
+        break;
+      }
     }
   }
-}
 
   Future<void> deleteAvailableCar(String vehicleNo) async{
     if(_availableCarBox ==null){
@@ -140,15 +162,15 @@ Future<void> deleteCar(String vehicleNo) async{
     }
   }
   Future<void> deleteOnHoldCar(String vehicleNo) async{
-   if(_onHoldCarBox == null){
-     await openBox();
-   }
-   for(var key in _onHoldCarBox!.keys){
-     final car = _onHoldCarBox!.get(key) as Cars;
-     if(car.vehicleNo == vehicleNo){
-       await _onHoldCarBox!.delete(key);
-     }
-   }
+    if(_onHoldCarBox == null){
+      await openBox();
+    }
+    for(var key in _onHoldCarBox!.keys){
+      final car = _onHoldCarBox!.get(key) as Cars;
+      if(car.vehicleNo == vehicleNo){
+        await _onHoldCarBox!.delete(key);
+      }
+    }
   }
 
   Future<void> deleteServicedCar(String vehicleNo)async{
@@ -219,10 +241,5 @@ Future<void> deleteCar(String vehicleNo) async{
       }
     }
   }
-
-
-
-
-
 
 }

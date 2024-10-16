@@ -13,6 +13,12 @@ class ExpenceServices{
     await _expBox!.close();
   }
 
+  Future<void> clearBox()async{
+    if(_expBox == null){
+      await openBox();
+    }
+    await _expBox!.clear();
+  }
 
   Future<void> addExpenses(expenses Expence)async{
     if(_expBox == null){

@@ -23,7 +23,12 @@ class WorkshopServices{
     }
     return workshopBox!.values.toList();
   }
-
+Future<void> clearBox()async{
+  if(workshopBox == null){
+    await openBox();
+  }
+  await workshopBox!.clear();
+}
 
 
 }

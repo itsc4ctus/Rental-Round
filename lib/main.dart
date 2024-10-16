@@ -21,7 +21,7 @@ void main() async{
   Hive.registerAdapter(statusAdapter());
   Hive.registerAdapter(expensesAdapter());
   Hive.registerAdapter(WorKShopModelAdapter());
-  await AuthServices().openBox();
+  // await AuthServices().openBox();
   await CarServices().openBox();
   await StatusServices().openBox();
   await ExpenceServices().openBox();

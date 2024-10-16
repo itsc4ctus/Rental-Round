@@ -41,11 +41,6 @@ class StatusServices{
     await completedDealBox!.add(status);
   }
 
-
-
-
-
-
   Future<List<status>> getStatus() async{
     if(statusBox == null){
      await openBox();
@@ -95,12 +90,6 @@ Future<List<status>> getCompletedDealStatus()async{
     }
   }
 
-
-
-
-
-
-
   Future<void> updateStatus(String customerID,status updatedStatus)async{
     if(statusBox == null){
       await openBox();
@@ -136,6 +125,20 @@ Future<List<status>> getCompletedDealStatus()async{
     }
   }
 
+  Future<void> clearBox() async{
+    if(completedStatusBox== null){
+      await openBox();
+    }
+    if(completedDealBox == null){
+      await openBox();
+    }
+    if(statusBox == null){
+      await openBox();
+    }
+    await statusBox!.clear();
+    await completedDealBox!.clear();
+    await completedStatusBox!.clear();
+  }
 
 
 }

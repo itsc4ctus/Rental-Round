@@ -83,6 +83,9 @@ class _EditCarScreenState extends State<EditCarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
+    double screenHeight = screenSize.height;
+    double screenWidth = screenSize.width;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -210,7 +213,7 @@ class _EditCarScreenState extends State<EditCarScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
-                        width: 200,
+                        width: screenWidth*0.49,
                         child: TextFormField(
                           validator: (value){
                             if(value==null || value == ""){

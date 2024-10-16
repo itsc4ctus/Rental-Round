@@ -17,37 +17,34 @@ class AuthAdapter extends TypeAdapter<Auth> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Auth(
-      username: fields[0] as String,
-      password: fields[1] as String,
-      shopname: fields[2] as String,
-      shopownername: fields[3] as String,
-      shoplocation: fields[4] as String,
-      phonenumer: fields[5] as int,
-      email: fields[6] as String,
-      image: fields[7] as String,
+      shopname: fields[1] as String,
+      shopownername: fields[2] as String,
+      shoplocation: fields[3] as String,
+      phonenumer: fields[4] as int,
+      email: fields[5] as String,
+      image: fields[6] as String,
+      status: fields[7] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, Auth obj) {
     writer
-      ..writeByte(8)
-      ..writeByte(0)
-      ..write(obj.username)
-      ..writeByte(1)
-      ..write(obj.password)
-      ..writeByte(2)
-      ..write(obj.shopname)
-      ..writeByte(3)
-      ..write(obj.shopownername)
-      ..writeByte(4)
-      ..write(obj.shoplocation)
-      ..writeByte(5)
-      ..write(obj.phonenumer)
-      ..writeByte(6)
-      ..write(obj.email)
       ..writeByte(7)
-      ..write(obj.image);
+      ..writeByte(1)
+      ..write(obj.shopname)
+      ..writeByte(2)
+      ..write(obj.shopownername)
+      ..writeByte(3)
+      ..write(obj.shoplocation)
+      ..writeByte(4)
+      ..write(obj.phonenumer)
+      ..writeByte(5)
+      ..write(obj.email)
+      ..writeByte(6)
+      ..write(obj.image)
+      ..writeByte(7)
+      ..write(obj.status);
   }
 
   @override

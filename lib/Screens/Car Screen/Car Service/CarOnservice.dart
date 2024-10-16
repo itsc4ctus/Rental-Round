@@ -96,6 +96,7 @@ Column(
                     _takeDown(widget.car,int.parse(serviceChargeController.text));
                     WorKShopModel workshop = WorKShopModel(car: widget.car, dateTime: DateTime.now(), serviceAmount: int.parse(serviceChargeController.text));
                     _takeWorkshop(workshop);
+                    serviceChargeController.clear();
                     Navigator.pop(context);
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       backgroundColor: Colors.green,

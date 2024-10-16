@@ -1,52 +1,77 @@
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rentel_round/Authentication/Screens/Sign-Up/signupfeild.dart';
-import 'package:rentel_round/Authentication/Screens/login_page.dart';
 import 'package:rentel_round/Models/auth_model.dart';
+import 'package:rentel_round/Screens/Navbar%20Screen/navbar.dart';
 import 'package:rentel_round/Services/auth_services.dart';
-import 'package:rentel_round/Services/car_services.dart';
 
 
-class SignupPage extends StatefulWidget {
 
-  const SignupPage({super.key});
+class EditProfile extends StatefulWidget {
+
+final Auth auth;
+  EditProfile({required this.auth,super.key});
 
   @override
-  State<SignupPage> createState() => _SignupPageState();
+  State<EditProfile> createState() => _EditProfileState();
 }
 
 TextEditingController shopnameController = TextEditingController();
 TextEditingController shopownernameController = TextEditingController();
 TextEditingController shoplocationController = TextEditingController();
 TextEditingController shopphonenoController = TextEditingController();
-TextEditingController usernameController = TextEditingController();
 TextEditingController emailController = TextEditingController();
-TextEditingController passwordController = TextEditingController();
-TextEditingController cpasswordController = TextEditingController();
 final GlobalKey<FormState> _formKey = GlobalKey();
-XFile? img;
+String? _image;
 
-class _SignupPageState extends State<SignupPage> {
+class _EditProfileState extends State<EditProfile> {
+
+
+
   SignUpFeilds feilds = SignUpFeilds();
   final ImagePicker _picker = ImagePicker();
-  XFile? _image;
+
 
   Future<void> pickImage() async{
-   final XFile? pickedimg = await _picker.pickImage(source: ImageSource.gallery);
-   if(pickedimg!=null){
-     setState(() {
-       _image = pickedimg;
-     });
+    final XFile? pickedimg = await _picker.pickImage(source: ImageSource.gallery);
+    if(pickedimg!=null){
+      setState(() {
+        _image = pickedimg.path;
+      });
 
-   }
+    }
+  }
+  @override
+  void initState() {
+   shopnameController = TextEditingController(text: widget.auth.shopname);
+   shopownernameController = TextEditingController(text: widget.auth.shopownername);
+  shoplocationController = TextEditingController(text: widget.auth.shoplocation);
+    shopphonenoController = TextEditingController(text: widget.auth.phonenumer.toString());
+     emailController = TextEditingController(text: widget.auth.email);
+     _image = widget.auth.image;
+    // TODO: implement initState
+    super.initState();
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        centerTitle:true,
+        title: Text("EDIT YOUR SHOP DETAILS",
+          style: TextStyle(
+              fontFamily: "fredoka"
+          ),
+        ),
+        actions: [
+          IconButton(onPressed: (){
+            Navigator.of(context).pop();
+          }, icon: Icon(Icons.close)),
+        ],
+      ),
       body: Form(
         key: _formKey,
         child: Center(
@@ -57,32 +82,17 @@ class _SignupPageState extends State<SignupPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Row(
-                    children: [
-                      IconButton(onPressed: (){
-                       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const LoginPage()
-                         ,), (route) => false);
-                      }, icon: const Icon(CupertinoIcons.back)),
-                      Container(
 
-                        child: const Text(
-                          "SIGNUP",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 30, color: Colors.black),
-                        ),
-                      ),
-                    ],
-                  ),
                   const SizedBox(
                     height: 10,
                   ),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: Container(
-                      height: 80,
-                      width: 80,
-                      color: Colors.purple.shade100,
-                      child: _image == null?const Icon(Icons.image):Image(image: FileImage(File(_image!.path)))
+                        height: 80,
+                        width: 80,
+                        color: Colors.purple.shade100,
+                        child: _image == null?const Icon(Icons.image):Image(image: FileImage(File(_image!)))
 
                     ),
                   ),
@@ -91,7 +101,7 @@ class _SignupPageState extends State<SignupPage> {
                   ),
                   ElevatedButton(
                     onPressed: () async{
-                     await pickImage();
+                      await pickImage();
                     },
                     child: const Text(
                       "UPLOAD",
@@ -139,15 +149,6 @@ class _SignupPageState extends State<SignupPage> {
                   const SizedBox(
                     height: 10,
                   ),
-                  feilds.feild("username", "enter username", usernameController, (value){
-                    if(value==null||value.isEmpty){
-                      return 'Enter a username';
-                    }
-                    return null;
-                  }),
-                  const SizedBox(
-                    height: 10,
-                  ),
                   feilds.feild("email", "enter your email", emailController, (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter an email address';
@@ -160,57 +161,43 @@ class _SignupPageState extends State<SignupPage> {
                   const SizedBox(
                     height: 10,
                   ),
-                  feilds.feild("password", "enter your password", passwordController, (value){
-                    if(value==null||value.isEmpty){
-                      return 'Enter a password';
-                    }
-                    return null;
-                  },TextInputType.text,[],true),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  feilds.feild("confirm password", "enter your password", cpasswordController, (value){
-                    if(value==null||value.isEmpty){
-                      return 'Enter a password';
-                    }
-                    return null;
-                  },TextInputType.text,[],true),
-                  const SizedBox(
-                    height: 10,
-                  ),
                   ElevatedButton(
-                    onPressed: () async {
-                      if(_formKey.currentState!.validate()){
-                        if(_image==null){
-                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Upload an image")));
-                          return;
-                        }
-                        if(passwordController.text != cpasswordController.text){
-                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("passwords must be same!")));
-                          return;
-                        }
-                        Auth auth = Auth(
+                    onPressed: ()  {
 
+                      if(_formKey.currentState!.validate()){
+                        _showDialogue("Press OK to edit profile", "OK", ()async{
+                          Auth auth = Auth(
                             shopname: shopnameController.text,
                             shopownername: shopownernameController.text,
                             shoplocation: shoplocationController.text,
                             phonenumer: int.parse(shopphonenoController.text),
                             email: emailController.text,
-                            image: _image!.path,
-                          status: true,
-                        );
-
-                        await CarServices().openBox(); //new
-                        Navigator.pushReplacement(
+                            image: _image!,
+                            status: true,
+                          );
+                          await AuthServices().updateUser(auth);
+                          await AuthServices().getUser("USER");
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  backgroundColor: Colors.blue,
+                                  content: Text("User profile edited!")));
+                          Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const LoginPage()));
+                                builder: (context) => NavBar(auth: auth,)),(route) => false,);
+                        }, context);
+
+                        if(_image==null){
+                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Upload an image")));
+                          return;
+                        }
+
                       }else{
                         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please fill the above details!")));
                       }
                     },
                     child: const Text(
-                      "CREATE ACCOUNT",
+                      "EDIT SHOP",
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
@@ -221,5 +208,19 @@ class _SignupPageState extends State<SignupPage> {
         ),
       ),
     );
+  }
+  void _showDialogue(String messege,String btnName,VoidCallback btnfn,BuildContext context){
+    showDialog(context: context,builder: (context) {
+      return AlertDialog(
+        title: Text(messege),
+        actions: [
+          ElevatedButton(onPressed: (){
+            Navigator.pop(context);
+          }, child: const Text("CANCEL")),
+          ElevatedButton(onPressed: btnfn, child: Text(btnName))
+        ],
+      );
+    });
+
   }
 }

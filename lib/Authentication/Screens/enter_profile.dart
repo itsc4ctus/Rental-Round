@@ -6,17 +6,19 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rentel_round/Authentication/Screens/Sign-Up/signupfeild.dart';
 import 'package:rentel_round/Authentication/Screens/login_page.dart';
+import 'package:rentel_round/Authentication/Screens/new_to_app.dart';
 import 'package:rentel_round/Models/auth_model.dart';
+import 'package:rentel_round/Screens/Navbar%20Screen/navbar.dart';
 import 'package:rentel_round/Services/auth_services.dart';
 import 'package:rentel_round/Services/car_services.dart';
 
 
-class SignupPage extends StatefulWidget {
+class AddProfile extends StatefulWidget {
 
-  const SignupPage({super.key});
+  const AddProfile({super.key});
 
   @override
-  State<SignupPage> createState() => _SignupPageState();
+  State<AddProfile> createState() => _AddProfileState();
 }
 
 TextEditingController shopnameController = TextEditingController();
@@ -30,23 +32,46 @@ TextEditingController cpasswordController = TextEditingController();
 final GlobalKey<FormState> _formKey = GlobalKey();
 XFile? img;
 
-class _SignupPageState extends State<SignupPage> {
+class _AddProfileState extends State<AddProfile> {
   SignUpFeilds feilds = SignUpFeilds();
   final ImagePicker _picker = ImagePicker();
   XFile? _image;
 
   Future<void> pickImage() async{
-   final XFile? pickedimg = await _picker.pickImage(source: ImageSource.gallery);
-   if(pickedimg!=null){
-     setState(() {
-       _image = pickedimg;
-     });
+    final XFile? pickedimg = await _picker.pickImage(source: ImageSource.gallery);
+    if(pickedimg!=null){
+      setState(() {
+        _image = pickedimg;
+      });
 
-   }
+    }
   }
+
+  @override
+  void dispose() {
+    shopnameController.clear();
+    shopownernameController.clear();
+    emailController.clear();
+    shoplocationController.clear();
+    shopphonenoController.clear();
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+
+        centerTitle:true,
+        title: Text("OPEN YOUR SHOP",
+          style: TextStyle(
+              fontFamily: "fredoka"
+          ),
+        ),
+
+      ),
       body: Form(
         key: _formKey,
         child: Center(
@@ -57,32 +82,17 @@ class _SignupPageState extends State<SignupPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Row(
-                    children: [
-                      IconButton(onPressed: (){
-                       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const LoginPage()
-                         ,), (route) => false);
-                      }, icon: const Icon(CupertinoIcons.back)),
-                      Container(
 
-                        child: const Text(
-                          "SIGNUP",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 30, color: Colors.black),
-                        ),
-                      ),
-                    ],
-                  ),
                   const SizedBox(
                     height: 10,
                   ),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: Container(
-                      height: 80,
-                      width: 80,
-                      color: Colors.purple.shade100,
-                      child: _image == null?const Icon(Icons.image):Image(image: FileImage(File(_image!.path)))
+                        height: 80,
+                        width: 80,
+                        color: Colors.purple.shade100,
+                        child: _image == null?const Icon(Icons.image):Image(image: FileImage(File(_image!.path)))
 
                     ),
                   ),
@@ -91,7 +101,7 @@ class _SignupPageState extends State<SignupPage> {
                   ),
                   ElevatedButton(
                     onPressed: () async{
-                     await pickImage();
+                      await pickImage();
                     },
                     child: const Text(
                       "UPLOAD",
@@ -139,15 +149,6 @@ class _SignupPageState extends State<SignupPage> {
                   const SizedBox(
                     height: 10,
                   ),
-                  feilds.feild("username", "enter username", usernameController, (value){
-                    if(value==null||value.isEmpty){
-                      return 'Enter a username';
-                    }
-                    return null;
-                  }),
-                  const SizedBox(
-                    height: 10,
-                  ),
                   feilds.feild("email", "enter your email", emailController, (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter an email address';
@@ -160,57 +161,38 @@ class _SignupPageState extends State<SignupPage> {
                   const SizedBox(
                     height: 10,
                   ),
-                  feilds.feild("password", "enter your password", passwordController, (value){
-                    if(value==null||value.isEmpty){
-                      return 'Enter a password';
-                    }
-                    return null;
-                  },TextInputType.text,[],true),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  feilds.feild("confirm password", "enter your password", cpasswordController, (value){
-                    if(value==null||value.isEmpty){
-                      return 'Enter a password';
-                    }
-                    return null;
-                  },TextInputType.text,[],true),
-                  const SizedBox(
-                    height: 10,
-                  ),
                   ElevatedButton(
-                    onPressed: () async {
+                    onPressed: (){
+                      if(_image==null){
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Upload an image")));
+                        return;
+                      }
                       if(_formKey.currentState!.validate()){
-                        if(_image==null){
-                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Upload an image")));
-                          return;
-                        }
-                        if(passwordController.text != cpasswordController.text){
-                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("passwords must be same!")));
-                          return;
-                        }
-                        Auth auth = Auth(
-
+                        _showDialogue("Click OK to OPEN YOUR SHOP", "OK", ()async{
+                          Auth auth = Auth(
                             shopname: shopnameController.text,
                             shopownername: shopownernameController.text,
                             shoplocation: shoplocationController.text,
                             phonenumer: int.parse(shopphonenoController.text),
                             email: emailController.text,
                             image: _image!.path,
-                          status: true,
-                        );
+                            status: true,
+                          );
+                          await AuthServices().addUser(auth);
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => NavBar(auth:auth ,)));
+                        }, context);
 
-                        await CarServices().openBox(); //new
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const LoginPage()));
+
+
                       }else{
                         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please fill the above details!")));
                       }
                     },
                     child: const Text(
-                      "CREATE ACCOUNT",
+                      "OPEN SHOP",
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
@@ -221,5 +203,19 @@ class _SignupPageState extends State<SignupPage> {
         ),
       ),
     );
+  }
+  void _showDialogue(String messege,String btnName,VoidCallback btnfn,BuildContext context){
+    showDialog(context: context,builder: (context) {
+      return AlertDialog(
+        title: Text(messege),
+        actions: [
+          ElevatedButton(onPressed: (){
+            Navigator.pop(context);
+          }, child: const Text("CANCEL")),
+          ElevatedButton(onPressed: btnfn, child: Text(btnName))
+        ],
+      );
+    });
+
   }
 }
